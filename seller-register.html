@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become a Seller — PHYNEX</title>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f6f8;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        .header {
+            height: 64px;
+            background: #073bce;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            color: white;
+        }
+
+        .logo { font-size: 25px; font-weight: 800; }
+
+        .back-home {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-home:hover { text-decoration: underline; }
+
+        .wrap {
+            width: 90%;
+            max-width: 460px;
+            margin: 50px auto 70px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e2e4e8;
+            padding: 32px 30px;
+        }
+
+        .card h1 {
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+
+        .card p.sub {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            margin-top: 16px;
+        }
+
+        label .hint {
+            font-weight: 400;
+            color: #888;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 11px 13px;
+            border: 1px solid #d9dde5;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: inherit;
+            background: #fff;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #073bce;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .two-col label { margin-top: 0; }
+
+        .section-title {
+            margin-top: 20px;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .03em;
+            color: #073bce;
+            border-top: 1px solid #eee;
+            padding-top: 16px;
+        }
+
+        .field-note {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .checkbox-row {
+            margin-top: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .checkbox-row input {
+            width: auto;
+            margin-top: 3px;
+        }
+
+        .checkbox-row label {
+            margin: 0;
+            font-weight: 400;
+            font-size: 13px;
+            color: #444;
+        }
+
+        button.submit {
+            width: 100%;
+            margin-top: 24px;
+            padding: 13px;
+            background: #073bce;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button.submit:hover { background: #052fa5; }
+        button.submit:disabled { opacity: .6; cursor: default; }
+
+        .switch {
+            margin-top: 18px;
+            font-size: 13px;
+            text-align: center;
+            color: #555;
+        }
+
+        .switch a { color: #073bce; font-weight: 700; }
+
+        .msg {
+            margin-top: 16px;
+            padding: 10px 12px;
+            border-radius: 5px;
+            font-size: 13px;
+            display: none;
+        }
+
+        .msg.error {
+            display: block;
+            background: #fdeaea;
+            color: #b42318;
+        }
+
+        .msg.success {
+            display: block;
+            background: #e8f6ec;
+            color: #0f7a3d;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">PHYNEX</div>
+        <a href="index.html" class="back-home">← Back to Store</a>
+    </header>
+
+    <main class="wrap">
+        <div class="card">
+            <h1>Become a Seller</h1>
+            <p class="sub">Create your seller account and start submitting products to PHYNEX. Buyers will be able to reach you directly on WhatsApp or by phone from your product listings.</p>
+
+            <form id="registerForm">
+
+                <label for="businessName">Business / Shop name</label>
+                <input type="text" id="businessName" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+
+                <label for="phone">Phone number <span class="hint">(required)</span></label>
+                <input type="tel" id="phone" placeholder="07XXXXXXXX" required>
+                <p class="field-note">Buyers can call this number to ask about your products.</p>
+
+                <label for="whatsapp">WhatsApp number <span class="hint">(required)</span></label>
+                <input type="tel" id="whatsapp" placeholder="07XXXXXXXX" required>
+                <p class="field-note">Shown on your listings as a "Chat on WhatsApp" button.</p>
+
+                <div class="checkbox-row">
+                    <input type="checkbox" id="sameAsPhone">
+                    <label for="sameAsPhone">My WhatsApp number is the same as my phone number</label>
+                </div>
+
+                <div class="section-title">Business location</div>
+                <div>
+                    <div>
+                        <label for="sellerCounty">County</label>
+                        <select id="sellerCounty" required>
+                            <option value="" disabled selected>Select county</option>
+                            <option value="Baringo">Baringo</option>
+                            <option value="Bomet">Bomet</option>
+                            <option value="Bungoma">Bungoma</option>
+                            <option value="Busia">Busia</option>
+                            <option value="Elgeyo-Marakwet">Elgeyo-Marakwet</option>
+                            <option value="Embu">Embu</option>
+                            <option value="Garissa">Garissa</option>
+                            <option value="Homa Bay">Homa Bay</option>
+                            <option value="Isiolo">Isiolo</option>
+                            <option value="Kajiado">Kajiado</option>
+                            <option value="Kakamega">Kakamega</option>
+                            <option value="Kericho">Kericho</option>
+                            <option value="Kiambu">Kiambu</option>
+                            <option value="Kilifi">Kilifi</option>
+                            <option value="Kirinyaga">Kirinyaga</option>
+                            <option value="Kisii">Kisii</option>
+                            <option value="Kisumu">Kisumu</option>
+                            <option value="Kitui">Kitui</option>
+                            <option value="Kwale">Kwale</option>
+                            <option value="Laikipia">Laikipia</option>
+                            <option value="Lamu">Lamu</option>
+                            <option value="Machakos">Machakos</option>
+                            <option value="Makueni">Makueni</option>
+                            <option value="Mandera">Mandera</option>
+                            <option value="Marsabit">Marsabit</option>
+                            <option value="Meru">Meru</option>
+                            <option value="Migori">Migori</option>
+                            <option value="Mombasa">Mombasa</option>
+                            <option value="Murang'a">Murang'a</option>
+                            <option value="Nairobi">Nairobi</option>
+                            <option value="Nakuru">Nakuru</option>
+                            <option value="Nandi">Nandi</option>
+                            <option value="Narok">Narok</option>
+                            <option value="Nyamira">Nyamira</option>
+                            <option value="Nyandarua">Nyandarua</option>
+                            <option value="Nyeri">Nyeri</option>
+                            <option value="Samburu">Samburu</option>
+                            <option value="Siaya">Siaya</option>
+                            <option value="Taita-Taveta">Taita-Taveta</option>
+                            <option value="Tana River">Tana River</option>
+                            <option value="Tharaka-Nithi">Tharaka-Nithi</option>
+                            <option value="Trans Nzoia">Trans Nzoia</option>
+                            <option value="Turkana">Turkana</option>
+                            <option value="Uasin Gishu">Uasin Gishu</option>
+                            <option value="Vihiga">Vihiga</option>
+                            <option value="Wajir">Wajir</option>
+                            <option value="West Pokot">West Pokot</option>
+                        </select>
+                    </div>
+                </div>
+                <p class="field-note">Shown to buyers so they know where to expect their order from.</p>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" minlength="6" required>
+
+                <div id="formMsg" class="msg"></div>
+
+                <button type="submit" class="submit" id="submitBtn">Create Seller Account</button>
+            </form>
+
+            <p class="switch">Already selling on PHYNEX? <a href="seller-login.html">Log in</a></p>
+        </div>
+    </main>
+</body>
+</html>

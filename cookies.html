@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cookie Policy | PHYNEX</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --brand: #0b3fae; --brand-dark: #082a7a; --brand-light: #4f7fe8; --accent: #e2971f;
+        --ink: #131a2c; --ink-soft: #5b6478; --line: #e3e6ee; --paper: #f5f6fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', Arial, sans-serif; background: var(--paper); color: var(--ink); line-height: 1.7; }
+    h1, h2 { font-family: 'Space Grotesk', 'Inter', sans-serif; }
+    a { color: var(--brand); }
+
+    .header { height: 66px; background: var(--brand); display: flex; align-items: center; justify-content: space-between; padding: 0 7%; color: #fff; }
+    .logo { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+    .back-home { color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; opacity: 0.92; }
+    .back-home:hover { opacity: 1; text-decoration: underline; }
+
+    .container { width: 88%; max-width: 880px; margin: 0 auto; padding: 44px 0 70px; }
+
+    .page-title { margin-bottom: 30px; }
+    .page-title .eyebrow { color: var(--brand); font-weight: 700; font-size: 13px; margin-bottom: 8px; }
+    .page-title h1 { font-size: clamp(1.7rem, 3.4vw, 2.2rem); margin-bottom: 10px; }
+    .page-title p { color: var(--ink-soft); font-size: 14.5px; }
+
+    .legal-nav { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
+    .legal-nav a { font-size: 13px; font-weight: 700; text-decoration: none; padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(--line); background: #fff; color: var(--ink-soft); }
+    .legal-nav a.active { background: var(--brand); border-color: var(--brand); color: #fff; }
+    .legal-nav a:hover:not(.active) { border-color: var(--brand-light); color: var(--brand); }
+
+    .manage-band { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 24px 28px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+    .manage-band h2 { font-size: 16px; margin-bottom: 4px; }
+    .manage-band p { color: var(--ink-soft); font-size: 13.5px; }
+    .manage-btn { background: var(--brand); color: #fff; border: none; padding: 12px 22px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; font-family: inherit; white-space: nowrap; }
+    .manage-btn:hover { background: var(--brand-dark); }
+
+    .content { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 10px 0; }
+    .section { padding: 26px 34px; border-bottom: 1px solid var(--line); }
+    .section:last-child { border-bottom: none; }
+    .section h2 { font-size: 17px; margin-bottom: 10px; color: var(--brand-dark); }
+    .section p { font-size: 14.5px; color: var(--ink-soft); margin-bottom: 10px; }
+    .section p:last-child { margin-bottom: 0; }
+
+    .cookie-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 6px; }
+    .cookie-table th { background: #eef1f8; text-align: left; padding: 12px 14px; border: 1px solid var(--line); color: var(--brand-dark); font-weight: 700; }
+    .cookie-table td { padding: 12px 14px; border: 1px solid var(--line); color: var(--ink-soft); vertical-align: top; }
+
+    footer { background: #0a1330; color: #aab2c5; text-align: center; padding: 26px 15px; font-size: 13px; }
+    footer a { color: #fff; text-decoration: none; font-weight: 600; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 700px) {
+        .header { padding: 0 5%; height: 58px; }
+        .logo { font-size: 21px; }
+        .container { width: 92%; padding: 30px 0 60px; }
+        .section { padding: 22px; }
+        .cookie-table { font-size: 12.5px; }
+        .cookie-table th, .cookie-table td { padding: 9px; }
+        .manage-band { flex-direction: column; align-items: flex-start; }
+    }
+</style>
+</head>
+<body>
+
+<header class="header">
+    <div class="logo">PHYNEX</div>
+    <a href="index.html" class="back-home">← Back to Store</a>
+</header>
+
+<main class="container">
+
+    <div class="page-title">
+        <div class="eyebrow">Legal</div>
+        <h1>Cookie Policy</h1>
+        <p>Last updated: 7 September 2026</p>
+    </div>
+
+    <nav class="legal-nav">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms & Conditions</a>
+        <a href="cookies.html" class="active">Cookie Policy</a>
+    </nav>
+
+    <div class="manage-band">
+        <div>
+            <h2>Manage your cookie preferences</h2>
+            <p>Change what analytics and marketing cookies PHYNEX can use, any time.</p>
+        </div>
+        <button class="manage-btn" onclick="window.PhynexConsent && window.PhynexConsent.openPreferences()">Cookie settings</button>
+    </div>
+
+    <div class="content">
+
+        <section class="section">
+            <h2>What are cookies?</h2>
+            <p>Cookies are small text files placed on your device when you visit a website. They help the site remember information about your visit, like items in your cart or your preferences, and can also be used to understand how the site is used.</p>
+        </section>
+
+        <section class="section">
+            <h2>How PHYNEX uses cookies</h2>
+            <table class="cookie-table">
+                <tr>
+                    <th>Category</th>
+                    <th>Purpose</th>
+                    <th>Can you turn it off?</th>
+                </tr>
+                <tr>
+                    <td>Necessary</td>
+                    <td>Keeps your cart, checkout and login working properly. Without these, the Site can't function correctly.</td>
+                    <td>No — always on</td>
+                </tr>
+                <tr>
+                    <td>Analytics</td>
+                    <td>Helps us understand how visitors browse and use PHYNEX, so we can fix issues and improve the shopping experience.</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>Marketing</td>
+                    <td>Used to show more relevant offers and measure the effectiveness of campaigns, on PHYNEX and elsewhere.</td>
+                    <td>Yes</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Managing cookies in your browser</h2>
+            <p>In addition to the preferences you set on PHYNEX, most browsers let you control cookies through their settings, including blocking or deleting them. Note that blocking necessary cookies may stop parts of the Site, like your cart, from working correctly.</p>
+        </section>
+
+        <section class="section">
+            <h2>Changes to this policy</h2>
+            <p>We may update this Cookie Policy from time to time to reflect changes in the cookies we use or for legal reasons. Check back here periodically for updates.</p>
+        </section>
+
+        <section class="section">
+            <h2>Questions?</h2>
+            <p>Email: <a href="mailto:phynex70@gmail.com">phynex70@gmail.com</a><br>
+            WhatsApp: <a href="https://wa.me/254793977389?text=Hello%20PHYNEX" target="_blank" rel="noopener">0793 977 389</a></p>
+        </section>
+
+    </div>
+</main>
+
+<footer>
+    © 2026 PHYNEX. All rights reserved. &nbsp;|&nbsp;
+    <a href="index.html">Back to PHYNEX</a>
+</footer>
+
+<script src="cookie-consent.js"></script>
+</body>
+</html>

@@ -1,0 +1,385 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account — PHYNEX</title>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f6f8;
+            color: #172033;
+            line-height: 1.6;
+        }
+
+        .top {
+            background: #071a49;
+            color: #fff;
+            padding: 16px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top a { color: #fff; text-decoration: none; font-size: 14px; }
+        .top a:hover { text-decoration: underline; }
+
+        .wrap {
+            width: 90%;
+            max-width: 480px;
+            margin: 50px auto 70px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e1e4e8;
+            border-radius: 12px;
+            padding: 32px 30px;
+        }
+
+        .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #0875e1;
+            color: #fff;
+            font-size: 22px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .card h1 { font-size: 22px; margin-bottom: 4px; }
+        .card p.email { color: #666; font-size: 14px; margin-bottom: 24px; }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 13px 0;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .row span:first-child { color: #666; }
+        .row span:last-child { font-weight: 700; }
+
+        .actions {
+            margin-top: 26px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .actions a, .actions button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 12px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            border: 1px solid #d9dde5;
+            background: #fff;
+            color: #172033;
+        }
+
+        .actions .primary {
+            background: #0875e1;
+            border-color: #0875e1;
+            color: #fff;
+        }
+
+        .actions .danger {
+            border-color: #f3c8c8;
+            color: #b42318;
+        }
+
+        .loading { text-align: center; color: #888; padding: 40px 0; }
+
+        .addr-section {
+            margin-top: 26px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .addr-section h2 {
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .addr-section p.hint {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 14px;
+        }
+
+        .addr-section label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            margin-top: 14px;
+        }
+
+        .addr-section label:first-of-type { margin-top: 0; }
+
+        .addr-section select, .addr-section input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d9dde5;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            background: #fff;
+        }
+
+        .addr-two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .addr-two-col label { margin-top: 0; }
+
+        .addr-save {
+            margin-top: 16px;
+            width: 100%;
+            padding: 11px;
+            background: #0875e1;
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .addr-save:disabled { opacity: .6; cursor: default; }
+
+        .addr-msg {
+            margin-top: 12px;
+            padding: 9px 11px;
+            border-radius: 6px;
+            font-size: 13px;
+            display: none;
+        }
+
+        .addr-msg.error { display: block; background: #fdeaea; color: #b42318; }
+        .addr-msg.success { display: block; background: #e8f6ec; color: #0f7a3d; }
+    </style>
+</head>
+<body>
+
+    <header class="top">
+        <strong>PHYNEX</strong>
+        <a href="index.html">← Continue Shopping</a>
+    </header>
+
+    <main class="wrap">
+        <div class="card" id="card">
+            <div class="loading">Loading your account...</div>
+        </div>
+    </main>
+
+    <script src="kenya-locations.js"></script>
+    <script>
+        var TOKEN_KEY = 'phynexCustomerToken';
+        var NAME_KEY = 'phynexCustomerName';
+        var token = localStorage.getItem(TOKEN_KEY);
+
+        if (!token) {
+            window.location.href = 'customer-login.html?redirect=' + encodeURIComponent('account.html');
+        } else {
+
+            fetch('/api/customers/me', {
+                headers: { Authorization: 'Bearer ' + token }
+            }).then(function (response) {
+
+                if (response.status === 401) {
+                    localStorage.removeItem(TOKEN_KEY);
+                    localStorage.removeItem(NAME_KEY);
+                    window.location.href = 'customer-login.html?redirect=' + encodeURIComponent('account.html');
+                    return null;
+                }
+
+                return response.json();
+
+            }).then(function (data) {
+
+                if (!data || !data.customer) return;
+
+                var c = data.customer;
+                var initial = (c.name || c.email || '?').trim().charAt(0).toUpperCase();
+
+                document.getElementById('card').innerHTML =
+                    '<div class="avatar">' + initial + '</div>' +
+                    '<h1>' + escapeHtml(c.name || 'PHYNEX customer') + '</h1>' +
+                    '<p class="email">' + escapeHtml(c.email || '') + '</p>' +
+                    '<div class="row"><span>Phone</span><span>' + escapeHtml(c.phone || 'Not set') + '</span></div>' +
+                    '<div class="row"><span>Delivery address</span><span>' + escapeHtml([c.subCounty, c.county].filter(Boolean).join(', ') || 'Not set') + '</span></div>' +
+                    '<div class="row"><span>Signed in with</span><span>' + (c.hasGoogle ? 'Google' : 'Email &amp; password') + '</span></div>' +
+                    '<div class="actions">' +
+                        '<a class="primary" href="index.html">Continue shopping</a>' +
+                        '<a href="customer-forgot-password.html">Change password</a>' +
+                        '<button class="danger" id="logoutBtn">Log out</button>' +
+                    '</div>' +
+                    '<div class="addr-section">' +
+                        '<h2>Saved delivery address</h2>' +
+                        '<p class="hint">Used to pre-fill your county and sub-county at checkout.</p>' +
+                        '<label for="acctPhone">Phone</label>' +
+                        '<input id="acctPhone" type="tel" placeholder="07XXXXXXXX" value="' + escapeHtml(c.phone || '') + '">' +
+                        '<div class="addr-two-col">' +
+                            '<div><label for="acctCounty">County</label><select id="acctCounty"><option value="" disabled' + (c.county ? '' : ' selected') + '>Select county</option></select></div>' +
+                            '<div><label for="acctSubCounty">Sub-county</label><select id="acctSubCounty" disabled><option value="" disabled selected>Select county first</option></select></div>' +
+                        '</div>' +
+                        '<button class="addr-save" id="addrSaveBtn">Save address</button>' +
+                        '<div id="addrMsg" class="addr-msg"></div>' +
+                    '</div>';
+
+                document.getElementById('logoutBtn').addEventListener('click', function () {
+                    fetch('/api/customers/logout', {
+                        method: 'POST',
+                        headers: { Authorization: 'Bearer ' + token }
+                    }).finally(function () {
+                        localStorage.removeItem(TOKEN_KEY);
+                        localStorage.removeItem(NAME_KEY);
+                        window.location.href = 'index.html';
+                    });
+                });
+
+                setupAddressForm(c);
+
+            }).catch(function () {
+                document.getElementById('card').innerHTML = '<div class="loading">Could not load your account. Please refresh.</div>';
+            });
+        }
+
+        function escapeHtml(text) {
+            var div = document.createElement('div');
+            div.textContent = text || '';
+            return div.innerHTML;
+        }
+
+        function setupAddressForm(customer) {
+            var countySelect = document.getElementById('acctCounty');
+            var subCountySelect = document.getElementById('acctSubCounty');
+            var saveBtn = document.getElementById('addrSaveBtn');
+            var msg = document.getElementById('addrMsg');
+            var counties = (typeof window !== 'undefined' && window.KENYA_COUNTIES) || {};
+
+            if (!countySelect || !subCountySelect || !Object.keys(counties).length) {
+                if (subCountySelect) subCountySelect.querySelector('option').textContent = 'Not available';
+                return;
+            }
+
+            Object.keys(counties).forEach(function (countyName) {
+                var opt = document.createElement('option');
+                opt.value = countyName;
+                opt.textContent = countyName;
+                if (countyName === customer.county) opt.selected = true;
+                countySelect.appendChild(opt);
+            });
+
+            function populateSubCounties(countyName, selectedSubCounty) {
+                subCountySelect.innerHTML = '';
+                var subCounties = counties[countyName] || [];
+
+                if (!countyName || !subCounties.length) {
+                    var placeholder = document.createElement('option');
+                    placeholder.value = '';
+                    placeholder.disabled = true;
+                    placeholder.selected = true;
+                    placeholder.textContent = 'Select county first';
+                    subCountySelect.appendChild(placeholder);
+                    subCountySelect.disabled = true;
+                    return;
+                }
+
+                var ph = document.createElement('option');
+                ph.value = '';
+                ph.disabled = true;
+                ph.selected = !selectedSubCounty;
+                ph.textContent = 'Select sub-county';
+                subCountySelect.appendChild(ph);
+
+                subCounties.forEach(function (subCountyName) {
+                    var opt = document.createElement('option');
+                    opt.value = subCountyName;
+                    opt.textContent = subCountyName;
+                    if (subCountyName === selectedSubCounty) opt.selected = true;
+                    subCountySelect.appendChild(opt);
+                });
+
+                subCountySelect.disabled = false;
+            }
+
+            if (customer.county) {
+                populateSubCounties(customer.county, customer.subCounty);
+            }
+
+            countySelect.addEventListener('change', function () {
+                populateSubCounties(countySelect.value, '');
+            });
+
+            saveBtn.addEventListener('click', function () {
+                msg.className = 'addr-msg';
+                msg.textContent = '';
+
+                var county = countySelect.value;
+                var subCounty = subCountySelect.value;
+
+                if (county && !subCounty) {
+                    msg.className = 'addr-msg error';
+                    msg.textContent = 'Select your sub-county.';
+                    return;
+                }
+
+                saveBtn.disabled = true;
+                saveBtn.textContent = 'Saving...';
+
+                fetch('/api/customers/me', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + token
+                    },
+                    body: JSON.stringify({
+                        name: customer.name,
+                        phone: document.getElementById('acctPhone').value.trim(),
+                        county: county,
+                        subCounty: subCounty
+                    })
+                }).then(function (response) {
+                    return response.json().then(function (data) {
+                        return { ok: response.ok, data: data };
+                    });
+                }).then(function (result) {
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = 'Save address';
+
+                    if (!result.ok) {
+                        msg.className = 'addr-msg error';
+                        msg.textContent = (result.data && result.data.message) || 'Could not save your address.';
+                        return;
+                    }
+
+                    msg.className = 'addr-msg success';
+                    msg.textContent = 'Address saved.';
+                }).catch(function () {
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = 'Save address';
+                    msg.className = 'addr-msg error';
+                    msg.textContent = 'Network error. Please try again.';
+                });
+            });
+        }
+    </script>
+
+</body>
+</html>

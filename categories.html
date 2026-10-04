@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PHYNEX — All Categories</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f6fa;color:#172033}
+.header{background:#fff;border-bottom:1px solid #e5e7eb;padding:15px 5%;position:sticky;top:0;z-index:10}
+.top{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:15px}.brand{font-size:26px;font-weight:800;color:#0875e1;text-decoration:none}
+.btn{background:#0875e1;color:#fff;text-decoration:none;padding:10px 15px;border-radius:8px;font-weight:700}
+.container{max-width:1200px;margin:auto;padding:30px 5% 80px}h1{margin:0 0 8px}.sub{color:#687083;margin:0 0 25px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.card{background:#fff;border:1px solid #e2e6ed;border-radius:14px;padding:22px;text-decoration:none;color:inherit;transition:.2s;display:flex;gap:14px;align-items:center}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(7,26,73,.1)}.icon{width:52px;height:52px;border-radius:12px;background:#eef4ff;color:#0875e1;display:grid;place-items:center;font-size:22px;flex:none}.name{font-weight:800}.count{font-size:12px;color:#687083;margin-top:5px}.empty{background:#fff;border-radius:12px;padding:30px;color:#687083}
+@media(max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:650px){.grid{grid-template-columns:repeat(2,1fr);gap:10px}.card{padding:14px;display:block}.icon{margin-bottom:10px}.container{padding:22px 12px 60px}.brand{font-size:22px}}
+</style>
+</head>
+<body>
+<header class="header"><div class="top"><a class="brand" href="index.html">PHYNEX</a><a class="btn" href="index.html">Home</a></div></header>
+<main class="container">
+<h1>Shop by Category</h1><p class="sub">Explore everything available on PHYNEX. New categories added by the admin appear here automatically.</p>
+<div class="grid" id="categories"></div>
+</main>
+<script>
+(async function(){
+ const grid=document.getElementById('categories');
+ try{
+   const r=await fetch('/api/categories',{cache:'no-store'});
+   if(!r.ok) throw new Error('Could not load categories');
+   const data=await r.json();
+   const categories=Array.isArray(data.categories)?data.categories:[];
+   grid.innerHTML=categories.length?categories.map(c=>
+     '<a class="card" href="category.html?category='+encodeURIComponent(c.name)+'">'+
+     '<span class="icon"><i class="fa-solid fa-layer-group"></i></span>'+
+     '<span><span class="name">'+escapeHtml(c.name)+'</span><span class="count">'+Number(c.productCount||0)+' products</span></span></a>'
+   ).join(''):'<div class="empty">No categories have been added yet.</div>';
+ }catch(e){grid.innerHTML='<div class="empty">Could not load categories. Please refresh.</div>';console.error(e);}
+ function escapeHtml(value){const d=document.createElement('div');d.textContent=value||'';return d.innerHTML;}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Careers | PHYNEX</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --brand: #0b3fae;
+        --brand-dark: #082a7a;
+        --brand-light: #4f7fe8;
+        --accent: #e2971f;
+        --ink: #131a2c;
+        --ink-soft: #5b6478;
+        --line: #e3e6ee;
+        --paper: #f5f6fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', Arial, sans-serif; background: var(--paper); color: var(--ink); line-height: 1.65; }
+    h1, h2, h3 { font-family: 'Space Grotesk', 'Inter', sans-serif; }
+    a { color: inherit; }
+
+    .header { height: 66px; background: var(--brand); display: flex; align-items: center; justify-content: space-between; padding: 0 7%; color: #fff; }
+    .logo { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+    .back-home { color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; opacity: 0.92; }
+    .back-home:hover { opacity: 1; text-decoration: underline; }
+
+    .hero { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); color: #fff; padding: 60px 7% 90px; position: relative; overflow: hidden; }
+    .hero::before { content: ""; position: absolute; top: -130px; right: -90px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0) 70%); }
+    .hero h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); margin-bottom: 14px; max-width: 16ch; position: relative; }
+    .hero p { color: #cfdaf7; font-size: 16px; max-width: 620px; position: relative; }
+
+    .container { width: 88%; max-width: 1080px; margin: -46px auto 70px; position: relative; }
+
+    .content { background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: 0 20px 44px -26px rgba(8,26,79,0.3); }
+    .section { padding: 36px 40px; border-bottom: 1px solid var(--line); }
+    .section:last-child { border-bottom: none; }
+    .section h2 { font-size: 20px; margin-bottom: 14px; }
+    .section p { color: var(--ink-soft); font-size: 14.5px; margin-bottom: 12px; max-width: 780px; }
+
+    .job { border: 1px solid var(--line); border-radius: 10px; padding: 22px; margin-top: 14px; }
+    .job h3 { color: var(--brand-dark); margin-bottom: 5px; font-size: 16px; }
+    .job-meta { color: #8890a0; font-size: 12.5px; margin-bottom: 10px; }
+    .job p { margin-bottom: 0; }
+
+    .notice { background: #eef3ff; border-left: 4px solid var(--accent); border-radius: 6px; padding: 15px 18px; margin-top: 15px; font-size: 14px; color: #33405c; }
+
+    .job-button { display: inline-block; margin-top: 6px; padding: 12px 22px; background: var(--brand); color: #fff; text-decoration: none; font-size: 14px; font-weight: 700; border-radius: 8px; }
+    .job-button:hover { background: var(--brand-dark); }
+
+    footer { background: #0a1330; color: #aab2c5; text-align: center; padding: 26px 15px; font-size: 13px; }
+    footer a { color: #fff; text-decoration: none; font-weight: 600; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 700px) {
+        .header { height: 58px; padding: 0 5%; }
+        .logo { font-size: 21px; }
+        .hero { padding: 44px 6% 66px; }
+        .container { width: 92%; margin-top: -30px; }
+        .content { border-radius: 10px; }
+        .section { padding: 26px; }
+        .job { padding: 18px; }
+    }
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="logo">PHYNEX</div>
+    <a href="index.html" class="back-home">← Back to Store</a>
+</header>
+
+<section class="hero">
+    <h1>Build the future of online shopping with us.</h1>
+    <p>Join PHYNEX as we build a better online shopping experience for customers and sellers across Kenya.</p>
+</section>
+
+<main class="container">
+    <div class="content">
+
+        <section class="section">
+            <h2>Build with PHYNEX</h2>
+            <p>PHYNEX is focused on building a reliable and convenient online marketplace for customers and sellers.</p>
+            <p>We are interested in people who enjoy solving problems, building useful products and improving the way people shop online.</p>
+        </section>
+
+        <section class="section">
+            <h2>Working at PHYNEX</h2>
+            <p>As PHYNEX grows, opportunities may become available across technology, operations, customer support, marketing, sales and other areas.</p>
+            <p>We value people who are dependable, willing to learn and focused on creating useful experiences for customers and sellers.</p>
+        </section>
+
+        <section class="section">
+            <h2>Current opportunities</h2>
+            <p>Available positions will be listed here when recruitment is open.</p>
+            <div class="notice">There are currently no specific job openings listed on this page. Check back later for new opportunities.</div>
+        </section>
+
+        <section class="section">
+            <h2>Areas we may hire for</h2>
+
+            <div class="job">
+                <h3>Technology &amp; Development</h3>
+                <div class="job-meta">Software · Web Development · IT</div>
+                <p>Help build and maintain the technology behind the PHYNEX marketplace.</p>
+            </div>
+
+            <div class="job">
+                <h3>Customer Support</h3>
+                <div class="job-meta">Customer Experience · Support</div>
+                <p>Help customers resolve questions and provide a reliable shopping experience.</p>
+            </div>
+
+            <div class="job">
+                <h3>Sales &amp; Marketing</h3>
+                <div class="job-meta">Marketing · Business Development</div>
+                <p>Help PHYNEX connect with customers, sellers and business partners.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Interested in working with us?</h2>
+            <p>If you would like to discuss future opportunities with PHYNEX, contact our team and introduce yourself.</p>
+            <a href="contact.html" class="job-button">Contact PHYNEX</a>
+        </section>
+
+    </div>
+</main>
+
+<footer>
+    © 2026 PHYNEX. All rights reserved. &nbsp;|&nbsp;
+    <a href="index.html">Back to PHYNEX</a>
+</footer>
+
+</body>
+</html>

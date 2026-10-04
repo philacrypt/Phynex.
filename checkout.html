@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | PHYNEX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        :root { --navy: #071a49; --blue: #0b3fae; --blue-dark: #082a7a; --accent: #e2971f; --text: #172033; --muted: #687083; --border: #e1e4e8; --page: #f5f6f8; --ok: #157a45; }
+        body { margin: 0; background: var(--page); color: var(--text); font-family: 'Inter', Arial, Helvetica, sans-serif; }
+        a { color: inherit; }
+        .checkout-page { width: min(1120px, 92%); margin: 0 auto; padding: 28px 0 50px; }
+        .checkout-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 22px; }
+        .checkout-brand { font-family: 'Space Grotesk', sans-serif; color: var(--navy); font-size: 26px; font-weight: 700; letter-spacing: -0.02em; text-decoration: none; }
+        .back-link { color: var(--blue); font-size: 14px; font-weight: 700; text-decoration: none; }
+        .checkout-header h1 { margin: 0; font-family: 'Space Grotesk', sans-serif; color: var(--navy); font-size: 26px; font-weight: 700; }
+        .trust-strip { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 18px; }
+        .trust-item { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); }
+        .trust-item svg { width: 15px; height: 15px; stroke: var(--blue); }
+        .checkout-layout { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(320px, .85fr); gap: 18px; align-items: start; }
+        .checkout-panel { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 24px; }
+        .checkout-panel h2 { margin: 0 0 18px; font-family: 'Space Grotesk', sans-serif; color: var(--navy); font-size: 19px; }
+        .checkout-items { margin-bottom: 18px; }
+        .checkout-item { display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid #edf0f3; }
+        .checkout-item:first-child { padding-top: 0; }
+        .checkout-item:last-child { border-bottom: 0; }
+        .checkout-item img { width: 76px; height: 76px; object-fit: contain; }
+        .checkout-item strong { display: block; font-size: 13px; line-height: 1.4; }
+        .checkout-item p { margin: 6px 0 9px; color: var(--muted); font-size: 13px; }
+        .line-quantity { display: flex; align-items: center; gap: 10px; }
+        .line-quantity button { width: 30px; height: 30px; border: 1px solid #d9dde5; border-radius: 6px; background: #f7f8fa; color: var(--text); cursor: pointer; }
+        .line-quantity span { min-width: 18px; text-align: center; font-weight: 700; }
+        .checkout-item > [data-remove] { border: 0; background: transparent; color: #d9363e; cursor: pointer; font-size: 12px; }
+        .empty-cart { padding: 18px 0; color: var(--muted); font-size: 14px; }
+        .empty-cart a { color: var(--blue); font-weight: 700; }
+        .summary { border-top: 1px solid var(--border); padding-top: 14px; }
+        .summary-row { display: flex; justify-content: space-between; gap: 15px; margin: 10px 0; color: var(--muted); font-size: 14px; }
+        .summary-total { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); color: var(--text); font-size: 19px; font-weight: 700; }
+        .checkout-form { display: grid; gap: 14px; }
+        .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .field-section-title { grid-column: 1 / -1; font-size: 14px; font-weight: 700; color: var(--text); margin: 4px 0 -4px; padding-top: 6px; border-top: 1px solid var(--border); }
+        .field-section-title:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+        .field { display: grid; gap: 6px; }
+        .field.full { grid-column: 1 / -1; }
+        .field label, .payment-heading { color: var(--text); font-size: 13px; font-weight: 700; }
+        .field input, .field textarea, .field select { width: 100%; border: 1.5px solid var(--border); border-radius: 7px; padding: 12px; background: #fbfcfe; color: var(--text); font: inherit; outline: none; }
+        .field textarea { min-height: 88px; resize: vertical; }
+        .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(11,63,174,0.12); background: #fff; }
+        .payment-section { display: grid; gap: 10px; margin-top: 3px; }
+        .payment-option { display: flex; align-items: flex-start; gap: 10px; padding: 13px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; }
+        .payment-option input { margin-top: 3px; accent-color: var(--blue); }
+        .payment-option strong { display: block; font-size: 14px; }
+        .payment-option small { display: block; margin-top: 4px; color: var(--muted); line-height: 1.4; }
+        .mpesa-fields { display: grid; gap: 6px; padding: 4px 0 0 28px; }
+        .mpesa-fields label { color: var(--text); font-size: 13px; font-weight: 700; }
+        .mpesa-fields input { width: 100%; border: 1.5px solid var(--border); border-radius: 7px; padding: 12px; font: inherit; }
+        .payment-note, .checkout-notice { display: none !important; }
+        .mpesa-button { width: 100%; border: 1.5px solid var(--blue); border-radius: 7px; padding: 12px; background: #fff; color: var(--blue); font-weight: 700; cursor: pointer; font-family: inherit; }
+        .mpesa-button:hover { background: #eef3ff; }
+        .mpesa-button:disabled, .place-order:disabled { cursor: wait; opacity: .65; }
+        .place-order { width: 100%; border: 0; border-radius: 7px; padding: 14px; background: var(--blue); color: #fff; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 15px; }
+        .place-order:hover { background: var(--blue-dark); }
+        .order-message { margin: 0; color: var(--blue); font-size: 13px; line-height: 1.5; }
+        #orderConfirmation h2 { font-family: 'Space Grotesk', sans-serif; color: var(--ok); }
+        @media (max-width: 760px) {
+            .checkout-page { width: min(94%, 620px); padding-top: 18px; }
+            .checkout-header { align-items: flex-start; flex-wrap: wrap; }
+            .checkout-header h1 { order: 3; flex-basis: 100%; font-size: 22px; }
+            .checkout-layout { grid-template-columns: 1fr; }
+            .checkout-panel { padding: 18px; }
+        }
+        @media (max-width: 480px) {
+            .checkout-header { gap: 8px; }
+            .checkout-brand { font-size: 22px; }
+            .back-link { font-size: 13px; }
+            .field-grid { grid-template-columns: 1fr; }
+            .field.full { grid-column: auto; }
+            .checkout-item { grid-template-columns: 60px minmax(0, 1fr); gap: 10px; }
+            .checkout-item img { width: 60px; height: 60px; }
+            .checkout-item > [data-remove] { grid-column: 2; justify-self: start; }
+            .checkout-panel h2 { font-size: 18px; }
+            .place-order, .mpesa-button { min-height: 46px; }
+        }
+    </style>
+</head>
+<body>
+    <main class="checkout-page">
+        <header class="checkout-header">
+            <a class="checkout-brand" href="index.html">PHYNEX</a>
+            <a class="back-link" href="cart.html">Back to cart</a>
+            <h1>Checkout</h1>
+        </header>
+
+        <div class="trust-strip">
+            <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 3L19 6V11C19 15.5 16 19.3 12 21C8 19.3 5 15.5 5 11V6L12 3Z"/><path d="M9 11.5L11 13.5L15 9.5"/></svg> Secure checkout</div>
+            <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10H21"/></svg> M-PESA payment</div>
+            <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 9L5 3H19L21 9" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12V20H19V12" stroke-linecap="round" stroke-linejoin="round"/></svg> Nationwide delivery</div>
+        </div>
+
+        <div class="checkout-layout">
+            <section class="checkout-panel" aria-labelledby="orderHeading">
+                <h2 id="orderHeading">Your order</h2>
+                <div id="checkoutItems" class="checkout-items"></div>
+                <p id="checkoutEmpty" class="empty-cart" hidden>Your cart is empty. <a href="index.html">Continue shopping</a>.</p>
+                <div class="summary">
+                    <div class="summary-row"><span>Subtotal</span><strong id="checkoutSubtotal">KSh 0</strong></div>
+                    <div class="summary-row"><span>Delivery fee</span><strong id="checkoutDeliveryFee">KSh 0</strong></div>
+                    <div class="summary-row summary-total"><span>Total</span><strong id="checkoutTotal">KSh 0</strong></div>
+                </div>
+            </section>
+
+            <section class="checkout-panel" aria-labelledby="detailsHeading">
+                <h2 id="detailsHeading">Customer and delivery details</h2>
+                <form id="checkoutForm" class="checkout-form">
+                    <div class="field-grid">
+                        <div class="field"><label for="customerName">Full name</label><input id="customerName" name="name" type="text" autocomplete="name" required></div>
+                        <div class="field"><label for="customerPhone">Phone number</label><input id="customerPhone" name="phone" type="tel" autocomplete="tel" required></div>
+                        <div class="field full"><label for="customerEmail">Email address</label><input id="customerEmail" name="email" type="email" autocomplete="email" required></div>
+                        <div class="field-section-title">Delivery Location</div>
+                        <div class="field">
+                            <label for="deliverySubCounty">Sub-county</label>
+                            <input id="deliverySubCounty" name="subCounty" type="text" autocomplete="address-level2" placeholder="e.g. Westlands">
+                        </div>
+                        <div class="field">
+                            <label for="deliveryCounty">County</label>
+                            <select id="deliveryCounty" name="county" required>
+                                <option value="" disabled selected>Select county</option>
+                                <option value="Baringo">Baringo</option>
+                                <option value="Bomet">Bomet</option>
+                                <option value="Bungoma">Bungoma</option>
+                                <option value="Busia">Busia</option>
+                                <option value="Elgeyo-Marakwet">Elgeyo-Marakwet</option>
+                                <option value="Embu">Embu</option>
+                                <option value="Garissa">Garissa</option>
+                                <option value="Homa Bay">Homa Bay</option>
+                                <option value="Isiolo">Isiolo</option>
+                                <option value="Kajiado">Kajiado</option>
+                                <option value="Kakamega">Kakamega</option>
+                                <option value="Kericho">Kericho</option>
+                                <option value="Kiambu">Kiambu</option>
+                                <option value="Kilifi">Kilifi</option>
+                                <option value="Kirinyaga">Kirinyaga</option>
+                                <option value="Kisii">Kisii</option>
+                                <option value="Kisumu">Kisumu</option>
+                                <option value="Kitui">Kitui</option>
+                                <option value="Kwale">Kwale</option>
+                                <option value="Laikipia">Laikipia</option>
+                                <option value="Lamu">Lamu</option>
+                                <option value="Machakos">Machakos</option>
+                                <option value="Makueni">Makueni</option>
+                                <option value="Mandera">Mandera</option>
+                                <option value="Marsabit">Marsabit</option>
+                                <option value="Meru">Meru</option>
+                                <option value="Migori">Migori</option>
+                                <option value="Mombasa">Mombasa</option>
+                                <option value="Murang'a">Murang'a</option>
+                                <option value="Nairobi">Nairobi</option>
+                                <option value="Nakuru">Nakuru</option>
+                                <option value="Nandi">Nandi</option>
+                                <option value="Narok">Narok</option>
+                                <option value="Nyamira">Nyamira</option>
+                                <option value="Nyandarua">Nyandarua</option>
+                                <option value="Nyeri">Nyeri</option>
+                                <option value="Samburu">Samburu</option>
+                                <option value="Siaya">Siaya</option>
+                                <option value="Taita-Taveta">Taita-Taveta</option>
+                                <option value="Tana River">Tana River</option>
+                                <option value="Tharaka-Nithi">Tharaka-Nithi</option>
+                                <option value="Trans Nzoia">Trans Nzoia</option>
+                                <option value="Turkana">Turkana</option>
+                                <option value="Uasin Gishu">Uasin Gishu</option>
+                                <option value="Vihiga">Vihiga</option>
+                                <option value="Wajir">Wajir</option>
+                                <option value="West Pokot">West Pokot</option>
+                            </select>
+                        </div>
+                        <div class="field full"><label for="deliveryLocation">Town, estate or area</label><input id="deliveryLocation" name="location" type="text" placeholder="e.g. Buruburu, Nyali, Milimani" required></div>
+                        <div class="field full"><label for="deliveryAddress">Delivery address</label><input id="deliveryAddress" name="address" type="text" autocomplete="street-address" placeholder="Building, street, house/plot number" required></div>
+                        <div class="field full"><label for="deliveryInstructions">Additional delivery instructions</label><textarea id="deliveryInstructions" name="instructions" placeholder="Optional instructions for the delivery partner"></textarea></div>
+                    </div>
+
+                    <div class="payment-section">
+                        <span class="payment-heading">Payment method</span>
+                        <label class="payment-option" for="mpesaPayment">
+                            <input id="mpesaPayment" name="paymentMethod" type="radio" value="mpesa" checked>
+                            <span><strong>M-PESA</strong><small>Enter the number you would use for payment.</small></span>
+                        </label>
+                        <div class="mpesa-fields"><label for="mpesaPhone">M-PESA phone number</label><input id="mpesaPhone" name="mpesaPhone" type="tel" placeholder="07XXXXXXXX" required></div>
+                        <button class="mpesa-button" id="payWithMpesa" type="button">Pay with M-PESA</button>
+                        <p class="payment-note" hidden>Clicking pay sends a real STK Push request to the number above through the PHYNEX backend. You'll get a prompt on your phone to enter your M-PESA PIN.</p>
+                    </div>
+
+                    <button class="place-order" type="submit">Place Order</button>
+                    <p id="checkoutMessage" class="order-message" role="status"></p>
+                    <p class="checkout-notice" hidden>Your order is created and reserved as soon as you submit. Stock is only deducted, and the order marked paid, once M-PESA confirms your payment.</p>
+                </form>
+                <section id="orderConfirmation" hidden aria-live="polite">
+                    <h2>Order Confirmed</h2>
+                    <p>Thank you for shopping with PHYNEX.</p>
+                    <p><strong>Payment:</strong> M-PESA</p>
+                    <p><strong>Status:</strong> Paid</p>
+                    <p><strong>Order number:</strong> <span id="confirmationOrderNumber"></span></p>
+                    <p><a class="back-link" id="trackConfirmedOrder" href="delivery.html#tracking">Track this order</a></p>
+                    <p><strong>Customer:</strong> <span id="confirmationCustomer"></span></p>
+                    <p><strong>Delivery:</strong> <span id="confirmationDelivery"></span></p>
+                    <div id="confirmationItems"></div>
+                    <p><strong>Total paid:</strong> <span id="confirmationTotal"></span></p>
+                    <p><a class="back-link" href="index.html">Continue shopping</a></p>
+                </section>
+            </section>
+        </div>
+    </main>
+    <script>
+(function () {
+  "use strict";
+
+  const CART_KEYS = ["phynexBuyNow", "phynexCart", "cart", "cartItems"];
+  let DELIVERY_FEE = 300; // default; replaced by the server value from /api/config
+
+  function readCart() {
+    for (const key of CART_KEYS) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) continue;
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) return parsed;
+        if (parsed && Array.isArray(parsed.items)) return parsed.items;
+      } catch (_) {}
+    }
+    return [];
+  }
+
+  function saveCart(cart) {
+    // Keep the main PHYNEX key and common fallback keys synchronized.
+    localStorage.setItem("phynexCart", JSON.stringify(cart));
+  }
+
+  function money(value) {
+    return "KSh " + Number(value || 0).toLocaleString("en-KE", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    });
+  }
+
+  function number(value) {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  function validProductId(value) {
+    const n = Number(value);
+    return Number.isInteger(n) && n > 0 ? n : null;
+  }
+
+  function itemId(item, index) {
+    const id = validProductId(item.id ?? item.productId ?? item.sku ?? item._id);
+    return id !== null ? String(id) : String(index);
+  }
+
+  function itemName(item) {
+    return item.name || item.title || item.productName || "Product";
+  }
+
+  function itemPrice(item) {
+    return number(item.price ?? item.unitPrice ?? item.amount);
+  }
+
+  function itemImage(item) {
+    return item.image || item.imageUrl || item.thumbnail || item.photo || "";
+  }
+
+  function itemQty(item) {
+    const q = parseInt(item.quantity ?? item.qty ?? 1, 10);
+    return Number.isFinite(q) && q > 0 ? q : 1;
+  }
+
+  function normalize(cart) {
+    // Drop any line whose id isn't a real, whole-number product id
+    // (e.g. stale/corrupted entries from an older cart format). Falling
+    // back to the array index here used to send a fake "id" to the
+    // server, which is what caused "Your cart contains an invalid
+    // product" at checkout.
+    return cart
+      .map((item) => ({
+        ...item,
+        id: validProductId(item.id ?? item.productId ?? item.sku ?? item._id)
+      }))
+      .filter((item) => item.id !== null)
+      .map((item) => ({ ...item, quantity: itemQty(item) }));
+  }
+
+  let cart = normalize(readCart());
+
+  fetch("/api/config").then(function (res) { return res.json(); }).then(function (config) {
+    var fee = Number(config && config.deliveryFee);
+    if (Number.isFinite(fee) && fee >= 0) {
+      DELIVERY_FEE = fee;
+      renderCart();
+    }
+  }).catch(function () {});
+  localStorage.removeItem("phynexBuyNow");
+
+  function renderCart() {
+    const container = document.getElementById("checkoutItems");
+    const empty = document.getElementById("checkoutEmpty");
+    const subtotalEl = document.getElementById("checkoutSubtotal");
+    const deliveryEl = document.getElementById("checkoutDeliveryFee");
+    const totalEl = document.getElementById("checkoutTotal");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    if (!cart.length) {
+      if (empty) empty.hidden = false;
+      if (subtotalEl) subtotalEl.textContent = money(0);
+      if (deliveryEl) deliveryEl.textContent = money(0);
+      if (totalEl) totalEl.textContent = money(0);
+      return;
+    }
+
+    if (empty) empty.hidden = true;
+
+    let subtotal = 0;
+
+    cart.forEach((item, index) => {
+      const price = itemPrice(item);
+      const qty = itemQty(item);
+      const lineTotal = price * qty;
+      subtotal += lineTotal;
+
+      const row = document.createElement("article");
+      row.className = "checkout-item";
+      row.dataset.index = index;
+
+      const img = document.createElement("img");
+      img.src = itemImage(item) || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='76' height='76'%3E%3Crect width='100%25' height='100%25' fill='%23f1f3f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23687083' font-size='10'%3EProduct%3C/text%3E%3C/svg%3E";
+      img.alt = itemName(item);
+      img.onerror = function () { this.style.visibility = "hidden"; };
+
+      const details = document.createElement("div");
+      const name = document.createElement("strong");
+      name.textContent = itemName(item);
+
+      const priceText = document.createElement("p");
+      priceText.textContent = money(price) + " each • " + money(lineTotal) + " total";
+
+      const controls = document.createElement("div");
+      controls.className = "line-quantity";
+
+      const minus = document.createElement("button");
+      minus.type = "button";
+      minus.textContent = "−";
+      minus.setAttribute("aria-label", "Decrease quantity");
+      minus.addEventListener("click", () => updateQty(index, qty - 1));
+
+      const qtyText = document.createElement("span");
+      qtyText.textContent = qty;
+
+      const plus = document.createElement("button");
+      plus.type = "button";
+      plus.textContent = "+";
+      plus.setAttribute("aria-label", "Increase quantity");
+      plus.addEventListener("click", () => updateQty(index, qty + 1));
+
+      controls.append(minus, qtyText, plus);
+      details.append(name, priceText, controls);
+
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.dataset.remove = "";
+      remove.textContent = "Remove";
+      remove.addEventListener("click", () => removeItem(index));
+
+      row.append(img, details, remove);
+      container.appendChild(row);
+    });
+
+    const delivery = subtotal > 0 ? DELIVERY_FEE : 0;
+    const total = subtotal + delivery;
+
+    if (subtotalEl) subtotalEl.textContent = money(subtotal);
+    if (deliveryEl) deliveryEl.textContent = money(delivery);
+    if (totalEl) totalEl.textContent = money(total);
+
+    saveCart(cart);
+  }
+
+  function updateQty(index, qty) {
+    if (!cart[index]) return;
+    if (qty <= 0) {
+      removeItem(index);
+      return;
+    }
+    cart[index].quantity = qty;
+    renderCart();
+  }
+
+  function removeItem(index) {
+    cart.splice(index, 1);
+    renderCart();
+  }
+
+  function cartSubtotal() {
+    return cart.reduce((sum, item) => sum + itemPrice(item) * itemQty(item), 0);
+  }
+
+  // Make an add-to-cart event from other PHYNEX pages immediately visible here.
+  window.addEventListener("storage", function (event) {
+    if (CART_KEYS.includes(event.key)) {
+      cart = normalize(readCart());
+      renderCart();
+    }
+  });
+
+  window.addEventListener("cartUpdated", function () {
+    cart = normalize(readCart());
+    renderCart();
+  });
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, ch => ({
+      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+    }[ch]));
+  }
+
+  /* =====================================================
+     REAL M-PESA CHECKOUT — talks to the PHYNEX backend
+     ===================================================== */
+
+  const form = document.getElementById("checkoutForm");
+  const mpesaButton = document.getElementById("payWithMpesa");
+  const placeOrderButton = form ? form.querySelector(".place-order") : null;
+  const formMessage = document.getElementById("checkoutMessage");
+
+  const POLL_INTERVAL_MS = 3000;
+  const MAX_POLL_ATTEMPTS = 40; // ~2 minutes of polling
+
+  let submitting = false;
+  let pollTimer = null;
+
+  function setMessage(text, isError) {
+    if (!formMessage) return;
+    formMessage.textContent = text || "";
+    formMessage.style.color = isError ? "#d9363e" : "";
+  }
+
+  function setBusy(busy, label) {
+    submitting = busy;
+    [mpesaButton, placeOrderButton].forEach(function (btn) {
+      if (!btn) return;
+      btn.disabled = busy;
+    });
+    if (label && mpesaButton) mpesaButton.textContent = label;
+  }
+
+  function stopPolling() {
+    if (pollTimer) {
+      clearTimeout(pollTimer);
+      pollTimer = null;
+    }
+  }
+
+  function showConfirmation(orderNumber, snapshot) {
+    const confirmation = document.getElementById("orderConfirmation");
+    const orderNumberEl = document.getElementById("confirmationOrderNumber");
+    const customerEl = document.getElementById("confirmationCustomer");
+    const deliveryEl = document.getElementById("confirmationDelivery");
+    const totalEl = document.getElementById("confirmationTotal");
+    const itemsEl = document.getElementById("confirmationItems");
+    const trackLink = document.getElementById("trackConfirmedOrder");
+
+    if (orderNumberEl) orderNumberEl.textContent = orderNumber;
+    if (trackLink) {
+      trackLink.href = "delivery.html?order=" + encodeURIComponent(orderNumber) +
+        "&email=" + encodeURIComponent(snapshot.email || "") + "#tracking";
+    }
+    if (customerEl) customerEl.textContent = snapshot.name;
+    if (deliveryEl) {
+      deliveryEl.textContent = [snapshot.address, snapshot.location, snapshot.county]
+        .filter(Boolean).join(", ");
+    }
+    if (totalEl) totalEl.textContent = money(snapshot.total);
+    if (itemsEl) {
+      itemsEl.innerHTML = snapshot.items.map(item =>
+        "<p><strong>" + escapeHtml(itemName(item)) + "</strong> × " +
+        itemQty(item) + " — " + money(itemPrice(item) * itemQty(item)) + "</p>"
+      ).join("");
+    }
+
+    if (confirmation) confirmation.hidden = false;
+    if (form) form.hidden = true;
+
+    cart = [];
+    saveCart(cart);
+    localStorage.removeItem("phynexBuyNow");
+    renderCart();
+  }
+
+  function pollPayment(checkoutRequestId, orderNumber, snapshot, attempt) {
+    attempt = attempt || 0;
+
+    fetch("/api/mpesa/status/" + encodeURIComponent(checkoutRequestId))
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.status === "paid") {
+          stopPolling();
+          setMessage("Payment received. Your order is confirmed.", false);
+          setBusy(false, "Pay with M-PESA");
+          showConfirmation(orderNumber, snapshot);
+          return;
+        }
+
+        if (data.status === "failed") {
+          stopPolling();
+          setBusy(false, "Pay with M-PESA");
+          var paymentMessage = String(data.message || "");
+          var wasCancelled = /cancelled|canceled|request cancelled|request canceled/i.test(paymentMessage);
+          if (wasCancelled) {
+            setMessage("", false);
+          } else {
+            setMessage(paymentMessage || "The M-PESA payment could not be completed. Please try again.", true);
+          }
+          return;
+        }
+
+        // still pending
+        if (attempt + 1 >= MAX_POLL_ATTEMPTS) {
+          stopPolling();
+          setBusy(false, "Check payment status");
+          setMessage(
+            "Still waiting for M-PESA to confirm this payment. If you entered your PIN, this can take a little longer — click \u201cCheck payment status\u201d to check again, or refresh in a minute.",
+            false
+          );
+          if (mpesaButton) {
+            mpesaButton.onclick = function () {
+              setBusy(true, "Checking...");
+              pollPayment(checkoutRequestId, orderNumber, snapshot, 0);
+            };
+          }
+          return;
+        }
+
+        pollTimer = setTimeout(function () {
+          pollPayment(checkoutRequestId, orderNumber, snapshot, attempt + 1);
+        }, POLL_INTERVAL_MS);
+      })
+      .catch(function () {
+        pollTimer = setTimeout(function () {
+          pollPayment(checkoutRequestId, orderNumber, snapshot, attempt + 1);
+        }, POLL_INTERVAL_MS);
+      });
+  }
+
+  function submitOrder(event) {
+    if (event) event.preventDefault();
+    if (submitting) return;
+
+    if (!cart.length) {
+      setMessage("Your cart is empty. Add a product before placing the order.", true);
+      return;
+    }
+
+    if (!form.reportValidity()) return;
+
+    const data = new FormData(form);
+    const mpesaPhoneInput = document.getElementById("mpesaPhone");
+    const mpesaPhone = mpesaPhoneInput ? mpesaPhoneInput.value.trim() : "";
+
+    if (!mpesaPhone) {
+      if (mpesaPhoneInput) mpesaPhoneInput.focus();
+      setMessage("Enter the M-PESA phone number to pay with.", true);
+      return;
+    }
+
+    const total = cartSubtotal() + (cartSubtotal() > 0 ? DELIVERY_FEE : 0);
+
+    const snapshot = {
+      name: data.get("name") || "",
+      email: data.get("email") || "",
+      county: data.get("county") || "",
+      location: data.get("location") || "",
+      address: data.get("address") || "",
+      items: cart.map(function (item) { return Object.assign({}, item); }),
+      total: total
+    };
+
+    const payload = {
+      items: cart.map(function (item) {
+        return { id: item.id, quantity: itemQty(item) };
+      }),
+      customer: {
+        name: data.get("name") || "",
+        email: data.get("email") || "",
+        phone: data.get("phone") || ""
+      },
+      delivery: {
+        county: data.get("county") || "",
+        subCounty: data.get("subCounty") || "",
+          location: data.get("location") || "",
+        address: data.get("address") || "",
+        instructions: data.get("instructions") || ""
+      },
+      mpesaPhone: mpesaPhone
+    };
+
+    setBusy(true, "Sending prompt...");
+    setMessage("Sending your M-PESA payment request...", false);
+
+    fetch("/api/mpesa/stkpush", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+      .then(function (res) {
+        return res.json().then(function (data) { return { ok: res.ok, data: data }; });
+      })
+      .then(function (result) {
+        if (!result.ok) {
+          setBusy(false, "Pay with M-PESA");
+          setMessage(result.data.message || "Unable to send the M-PESA request. Please try again.", true);
+          return;
+        }
+
+        setBusy(true, "Waiting for you to pay...");
+        setMessage(
+          (result.data.customerMessage || "A payment prompt was sent to your phone.") +
+          " Enter your M-PESA PIN on " + mpesaPhone + " to pay " + money(total) + ". Don't close this page.",
+          false
+        );
+
+        pollPayment(result.data.checkoutRequestId, result.data.orderNumber, snapshot, 0);
+      })
+      .catch(function () {
+        setBusy(false, "Pay with M-PESA");
+        setMessage("Could not reach the PHYNEX server. Check your connection and try again.", true);
+      });
+  }
+
+  if (form) form.addEventListener("submit", submitOrder);
+  if (mpesaButton) mpesaButton.addEventListener("click", submitOrder);
+
+  renderCart();
+})();
+</script>
+
+</body>
+</html>

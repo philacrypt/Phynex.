@@ -1,0 +1,2547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHYNEX - Technology Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f8fa;
+            color: #172033;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .top-bar {
+            height: 30px;
+            background: #071a49;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 4%;
+            font-size: 12px;
+        }
+
+        .top-right {
+            display: flex;
+            gap: 28px;
+        }
+
+        .main-header {
+            background: white;
+            height: 76px;
+            display: flex;
+            align-items: center;
+            gap: 35px;
+            padding: 0 4%;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .logo {
+            width: 155px;
+            height: 58px;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .logo img {
+            width: 145px;
+            height: 55px;
+            object-fit: contain;
+            object-position: left center;
+            display: block;
+        }
+
+        .search-box {
+            flex: 1;
+            height: 42px;
+            display: flex;
+            border: 1px solid #d9dde5;
+            border-radius: 6px;
+            overflow: hidden;
+            background: white;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .search-box:focus-within {
+            border-color: #0875e1;
+            box-shadow: 0 0 0 3px rgba(8,117,225,.12);
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 0 16px;
+            font-size: 14px;
+        }
+
+        .search-box button {
+            width: 90px;
+            border: none;
+            background: #0875e1;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background .2s ease;
+        }
+
+        .search-box button:hover {
+            background: #075fc0;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .action {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .action-icon {
+            font-size: 23px;
+        }
+
+        .action small {
+            display: block;
+            color: #777;
+            margin-top: 2px;
+        }
+
+        .nav {
+            height: 48px;
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: 35px;
+            padding: 0 4%;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+            font-weight: 600;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .nav-item {
+            transition: color .15s ease;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            color: #0875e1;
+        }
+
+        .nav-item:first-child {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .deals {
+            color: #e53935;
+        }
+
+        main {
+            width: 97%;
+            max-width: 1450px;
+            margin: auto;
+        }
+
+        .ad-carousel {
+            width: 97%;
+            max-width: 1450px;
+            margin: 12px auto 0;
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            aspect-ratio: 16 / 5;
+            background: #eef1f6;
+            box-shadow: 0 10px 30px rgba(7,26,73,.12);
+        }
+
+        .ad-carousel-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform .6s ease;
+        }
+
+        .ad-slide {
+            position: relative;
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .ad-slide img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .ad-slide img.broken {
+            display: none;
+        }
+
+        /* Shows through until a real image is dropped in at the
+           src above (or once that image fails to load). Swap the
+           <img src> — this placeholder disappears on its own. */
+        .ad-slide-placeholder {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background:
+                repeating-linear-gradient(45deg, #eef1f6, #eef1f6 12px, #e3e8f0 12px, #e3e8f0 24px);
+            color: #7c8494;
+            text-align: center;
+        }
+
+        .ad-slide-placeholder i {
+            font-size: 26px;
+            color: #a7afbe;
+        }
+
+        .ad-slide-placeholder span {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .ad-slide-placeholder small {
+            display: block;
+            font-weight: 400;
+            color: #97a0b0;
+            margin-top: 2px;
+        }
+
+        .ad-carousel-dots {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .ad-carousel-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.55);
+            cursor: pointer;
+            transition: background .2s ease, transform .2s ease;
+        }
+
+        .ad-carousel-dots span.active {
+            background: #fff;
+            transform: scale(1.25);
+        }
+
+        /* ---- Mobile bottom navigation bar ----
+           Hidden on desktop; becomes a fixed bar pinned to the
+           bottom of the screen on phones, showing Home / Category /
+           Message / Cart / Account, like most shopping apps use. */
+        .mobile-bottom-nav {
+            display: none;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding-bottom: 64px;
+            }
+
+            .mobile-bottom-nav {
+                display: flex;
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 999;
+                height: 60px;
+                background: white;
+                border-top: 1px solid #e5e7eb;
+                box-shadow: 0 -4px 14px rgba(7, 26, 73, .1);
+                align-items: center;
+                justify-content: space-around;
+            }
+
+            .mbn-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3px;
+                flex: 1;
+                height: 100%;
+                position: relative;
+                color: #687083;
+                font-size: 10px;
+                font-weight: 600;
+            }
+
+            .mbn-item.active {
+                color: #0875e1;
+            }
+
+            .mbn-item i {
+                font-size: 19px;
+                line-height: 1;
+            }
+
+            .mbn-logo {
+                width: 22px;
+                height: 22px;
+                object-fit: contain;
+                border-radius: 5px;
+            }
+
+            .mbn-badge {
+                position: absolute;
+                top: 2px;
+                right: 22%;
+                min-width: 15px;
+                height: 15px;
+                padding: 0 3px;
+                border-radius: 8px;
+                background: #e53935;
+                color: white;
+                font-size: 9px;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .ad-carousel {
+                aspect-ratio: 16 / 9;
+                border-radius: 10px;
+            }
+        }
+
+        .ad-strip {
+            margin-top: 14px;
+            background: #eaf3ff;
+            border: 1px solid #cfe3fb;
+            border-radius: 8px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 13px;
+            color: #0d2e6e;
+            flex-wrap: wrap;
+        }
+
+        .ad-strip strong {
+            color: #071a49;
+        }
+
+        .ad-strip-link {
+            color: #0875e1;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .shop-btn {
+            border: none;
+            background: #0875e1;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background .2s ease, transform .15s ease;
+        }
+
+        .shop-btn:hover {
+            background: #0b8bf0;
+        }
+
+        .shop-btn:active {
+            transform: scale(.97);
+        }
+
+        /* ---- Showcase: swap each tile's image for your own product
+           photo. Recommended size ~800x900px (portrait) so the crop
+           looks good; filenames below are just placeholders. ---- */
+        .showcase {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            margin-top: 0;
+            background: #f0f2f6;
+            padding: 28px 4% 34px;
+        }
+
+        .showcase-grid {
+            max-width: 1450px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .showcase-tile {
+            position: relative;
+            display: block;
+            aspect-ratio: 4 / 5;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #dde1e8;
+            box-shadow: 0 2px 10px rgba(7,26,73,.08);
+        }
+
+        .showcase-tile img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform .3s ease;
+            z-index: 1;
+        }
+
+        .showcase-tile img.broken {
+            display: none;
+        }
+
+        .showcase-tile:hover img {
+            transform: scale(1.04);
+        }
+
+        /* Shows through until a real photo is dropped in at the
+           src above (or once that image fails to load). Swap the
+           <img src> — this placeholder disappears on its own. */
+        .showcase-tile-placeholder {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background:
+                repeating-linear-gradient(45deg, #eef1f6, #eef1f6 12px, #e3e8f0 12px, #e3e8f0 24px);
+            color: #7c8494;
+            text-align: center;
+            padding: 16px;
+        }
+
+        .showcase-tile-placeholder i {
+            font-size: 24px;
+            color: #a7afbe;
+        }
+
+        .showcase-tile-placeholder span {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .showcase-tile-placeholder small {
+            display: block;
+            font-weight: 400;
+            color: #97a0b0;
+            margin-top: 2px;
+        }
+
+        .showcase-tile-overlay {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
+            padding: 16px;
+            background: linear-gradient(0deg, rgba(7,26,73,.72) 0%, rgba(7,26,73,0) 100%);
+        }
+
+        .showcase-tile-overlay strong {
+            display: block;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .showcase-tile-overlay span {
+            display: block;
+            margin-top: 2px;
+            color: rgba(255,255,255,.85);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 900px) {
+            .showcase-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 22px 0 12px;
+        }
+
+        .section-heading h2 {
+            font-size: 19px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .heading-icon {
+            font-size: 18px;
+        }
+
+        @keyframes timerPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(229, 57, 53, .45); }
+            50% { box-shadow: 0 0 0 6px rgba(229, 57, 53, 0); }
+        }
+
+        .timer {
+            animation: timerPulse 1.8s ease-out infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .timer { animation: none; }
+        }
+
+        .view-all {
+            color: #0875e1;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+        }
+
+        .category {
+            position: relative;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            border-top: 3px solid transparent;
+            height: 125px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 9px;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(7,26,73,.05);
+            transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+        }
+
+        .category:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent, #0875e1);
+            box-shadow: 0 10px 22px rgba(7,26,73,.12);
+        }
+
+        .cat-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--accent, #0875e1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            box-shadow: 0 2px 6px rgba(7,26,73,.18);
+            overflow: hidden;
+        }
+
+        /* Optional: add your own small icon/logo image at the src
+           given in each badge below (e.g. images/icon-phones.png).
+           Until then, or if it fails to load, the Font Awesome icon
+           underneath keeps showing — nothing looks broken either way. */
+        .cat-badge img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .cat-badge img.broken {
+            display: none;
+        }
+
+        .category img {
+            width: 65px;
+            height: 65px;
+            object-fit: contain;
+        }
+
+        .category span {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .flash-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .timer {
+            background: #e53935;
+            color: white;
+            padding: 7px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .catalog-empty {
+            grid-column: 1 / -1;
+            padding: 28px 20px;
+            border: 1px solid #e1e4e8;
+            background: white;
+            color: #687083;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* ---- In-feed advertisement slots ----
+           These sit inside the product grid and span the full row so
+           they read as sponsored banners rather than products. Swap
+           the <img> src on each .ad-banner-media for your own creative;
+           recommended size is roughly 1200x300px (or 4:1). The
+           .ad-banner-label badge is there so visitors can tell it's an
+           ad, which most ad networks/marketplaces require anyway. */
+        .ad-banner {
+            grid-column: 1 / -1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            min-height: 140px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: linear-gradient(120deg, #eef1f6, #e3e8f0);
+            border: 1px solid #e1e4e8;
+        }
+
+        .ad-banner-media {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            z-index: 1;
+        }
+
+        .ad-banner-media.broken {
+            display: none;
+        }
+
+        /* Shows through until a real image is dropped in at the
+           src above (or once that image fails to load). Swap the
+           <img src> — this placeholder disappears on its own. */
+        .ad-banner-placeholder {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background:
+                repeating-linear-gradient(45deg, #eef1f6, #eef1f6 12px, #e3e8f0 12px, #e3e8f0 24px);
+            color: #7c8494;
+            text-align: center;
+        }
+
+        .ad-banner-placeholder i {
+            font-size: 22px;
+            color: #a7afbe;
+        }
+
+        .ad-banner-placeholder span {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .ad-banner-placeholder small {
+            display: block;
+            font-weight: 400;
+            color: #97a0b0;
+            margin-top: 2px;
+        }
+
+        .ad-banner-overlay {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            width: 100%;
+            padding: 22px 28px;
+            background: linear-gradient(90deg, rgba(7,26,73,.55) 0%, rgba(7,26,73,.15) 55%, rgba(7,26,73,0) 100%);
+        }
+
+        .ad-banner-copy strong {
+            display: block;
+            font-size: 19px;
+            color: white;
+            text-shadow: 0 1px 4px rgba(0,0,0,.35);
+        }
+
+        .ad-banner-copy span {
+            display: block;
+            margin-top: 4px;
+            font-size: 13px;
+            color: rgba(255,255,255,.9);
+            text-shadow: 0 1px 4px rgba(0,0,0,.35);
+        }
+
+        .ad-banner-cta {
+            flex-shrink: 0;
+            padding: 10px 20px;
+            border-radius: 6px;
+            background: white;
+            color: #071a49;
+            font-weight: 700;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .ad-banner-label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 2;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            color: white;
+            background: rgba(7,26,73,.55);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 640px) {
+            .ad-banner {
+                min-height: 110px;
+            }
+
+            .ad-banner-overlay {
+                padding: 16px;
+            }
+
+            .ad-banner-copy strong {
+                font-size: 15px;
+            }
+
+            .ad-banner-cta {
+                padding: 8px 14px;
+                font-size: 12px;
+            }
+        }
+
+        .product {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border: 1px solid #e1e4e8;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(7, 26, 73, .06);
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 28px rgba(7, 26, 73, .14);
+        }
+
+        /* Scroll-reveal animation for product cards.
+           The 'reveal' class is only added by JS, so if JS fails
+           to load, cards stay fully visible by default. */
+        .product.reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .6s ease, transform .6s ease;
+        }
+
+        .product.reveal.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .product.reveal {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+        .product-image {
+            height: 190px;
+            padding: 15px;
+            flex: 0 0 190px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            cursor: pointer;
+        }
+
+        .product-info {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            padding: 12px;
+        }
+
+        .product-name {
+            font-size: 13px;
+            line-height: 1.4;
+            min-height: 38px;
+            margin-bottom: 8px;
+        }
+
+        .rating {
+            color: #f4a300;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: 800;
+            color: #071a49;
+            margin-bottom: 5px;
+        }
+
+        .old-price {
+            color: #999;
+            text-decoration: line-through;
+            font-size: 11px;
+            font-weight: normal;
+            margin-left: 5px;
+        }
+
+        .express {
+            color: #0875e1;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .express::before {
+            content: "\f0e7";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            margin-right: 4px;
+        }
+
+        .stock-status {
+            color: #218739;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .stock-status::before {
+            content: "\f111";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            font-size: 7px;
+            margin-right: 5px;
+            vertical-align: 1px;
+        }
+
+        .stock-status.sold-out {
+            color: #b91c1c;
+        }
+
+        .product-actions button[disabled] {
+            background: #d7dbe0;
+            color: #7a8290;
+            cursor: not-allowed;
+        }
+
+        /* Ribbon shown on seller listings flagged as sponsored by admin */
+        .sponsored-tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #073bce;
+            color: white;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .03em;
+            text-transform: uppercase;
+            padding: 3px 9px;
+            border-radius: 20px;
+            z-index: 2;
+        }
+
+        .seller-tag {
+            color: #8a92a3;
+            font-size: 11px;
+            margin-bottom: 6px;
+        }
+
+        .product-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .cart-btn {
+            width: 100%;
+            height: 36px;
+            border: none;
+            background: #0875e1;
+            color: white;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background .2s ease, transform .15s ease;
+        }
+
+        .cart-btn:hover {
+            background: #075fc0;
+        }
+
+        .cart-btn:active {
+            transform: scale(.97);
+        }
+
+        .cart-btn::before {
+            content: "\f07a";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            margin-right: 6px;
+        }
+
+        .buy-btn::before {
+            content: "\f0e7";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            margin-right: 6px;
+        }
+
+        .buy-btn {
+            width: 100%;
+            min-height: 36px;
+            border: 1px solid #071a49;
+            background: #fff;
+            color: #071a49;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background .2s ease, color .2s ease;
+        }
+
+        .buy-btn:hover {
+            background: #071a49;
+            color: #fff;
+        }
+
+        .promo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 28px;
+        }
+
+        .promo {
+            min-height: 220px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            background: #071a49;
+            color: white;
+            padding: 28px 30px;
+            box-shadow: 0 8px 22px rgba(7,26,73,.12);
+        }
+
+        .promo.light {
+            background: #dceeff;
+            color: #071a49;
+        }
+
+        .promo h2 {
+            position: relative;
+            z-index: 2;
+            width: 50%;
+            font-size: 21px;
+            line-height: 1.15;
+            margin-bottom: 10px;
+        }
+
+        .promo h2 span {
+            color: #0875e1;
+        }
+
+        .promo p {
+            position: relative;
+            z-index: 2;
+            width: 48%;
+            font-size: 12px;
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+
+        .promo .shop-btn {
+            position: relative;
+            z-index: 3;
+            max-width: 48%;
+        }
+
+        .promo img {
+            position: absolute;
+            right: 2%;
+            bottom: 0;
+            width: 46%;
+            height: 100%;
+            object-fit: contain;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Prevent promo text/buttons from being clipped on phones. */
+        @media (max-width: 640px) {
+            .promo {
+                min-height: 300px;
+                padding: 24px 20px 20px;
+            }
+
+            .promo h2 {
+                width: 56%;
+                font-size: 20px;
+            }
+
+            .promo p {
+                width: 55%;
+                font-size: 12px;
+            }
+
+            .promo .shop-btn {
+                width: 54%;
+                max-width: none;
+                padding: 12px 10px;
+                font-size: 13px;
+            }
+
+            .promo img {
+                right: 0;
+                width: 48%;
+                height: 82%;
+            }
+        }
+
+        .benefits {
+            background: white;
+            border: 1px solid #e1e4e8;
+            margin: 25px 0;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(7,26,73,.05);
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 22px;
+            border-right: 1px solid #eee;
+        }
+
+        .benefit:last-child {
+            border-right: none;
+        }
+
+        .benefit-icon {
+            font-size: 30px;
+        }
+
+        .benefit strong {
+            font-size: 12px;
+        }
+
+        .benefit p {
+            font-size: 10px;
+            color: #777;
+            margin-top: 4px;
+        }
+
+        .product-popup {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100000;
+            background: #fff;
+            flex-direction: column;
+        }
+
+        .product-popup.show {
+            display: flex;
+        }
+
+        .pp-topbar {
+            flex-shrink: 0;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 14px;
+            border-bottom: 1px solid #eee;
+            background: #fff;
+        }
+
+        .pp-topbar-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #172033;
+        }
+
+        .product-popup-close {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            border: none;
+            border-radius: 50%;
+            background: #f1f3f6;
+            color: #172033;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            transition: background .2s ease;
+        }
+
+        .product-popup-close:hover {
+            background: #e3e6eb;
+        }
+
+        .product-popup-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 90px;
+        }
+
+        .pp-gallery {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            max-height: 380px;
+            background: #f7f8fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .product-popup-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .pp-gallery-counter {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0,0,0,.55);
+            color: #fff;
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        .pp-info {
+            padding: 16px 18px;
+        }
+
+        .pp-price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .product-popup-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e53935;
+        }
+
+        .product-popup-price.no-discount {
+            color: #071a49;
+        }
+
+        .old-price {
+            font-size: 14px;
+            color: #9aa2b1;
+            text-decoration: line-through;
+        }
+
+        .product-popup-discount {
+            font-size: 13px;
+            font-weight: bold;
+            color: #e53935;
+        }
+
+        .product-popup-title {
+            margin: 4px 0 10px;
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1.35;
+            color: #172033;
+        }
+
+        .product-popup-rating {
+            margin-bottom: 4px;
+            color: #f4a300;
+            font-size: 14px;
+        }
+
+        .pp-express-badge {
+            display: inline-block;
+            margin-top: 8px;
+            background: #eaf3ff;
+            color: #0875e1;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: .3px;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+
+        .pp-qty-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            border-top: 8px solid #f7f8fa;
+        }
+
+        .pp-qty-row > span {
+            font-size: 14px;
+            font-weight: 600;
+            color: #172033;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .quantity-controls button {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #d9dde5;
+            border-radius: 6px;
+            background: #f7f8fa;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background .15s ease;
+        }
+
+        .quantity-controls button:hover {
+            background: #e8ebef;
+        }
+
+        .quantity-controls span {
+            min-width: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .pp-tabs {
+            display: flex;
+            border-top: 8px solid #f7f8fa;
+            border-bottom: 1px solid #eee;
+        }
+
+        .pp-tab {
+            flex: 1;
+            text-align: center;
+            padding: 14px 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #687083;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .pp-tab.active {
+            color: #071a49;
+            border-bottom-color: #0875e1;
+        }
+
+        .pp-tab-panel {
+            display: none;
+            padding: 16px 18px;
+        }
+
+        .pp-tab-panel.active {
+            display: block;
+        }
+
+        .product-popup-description {
+            margin-bottom: 14px;
+            color: #687083;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .product-popup-specifications {
+            margin: 0;
+            color: #687083;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .pp-reviews-empty {
+            color: #687083;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .pp-section {
+            padding: 16px 18px;
+            border-top: 8px solid #f7f8fa;
+        }
+
+        .pp-section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #172033;
+            margin-bottom: 10px;
+        }
+
+        .pp-shipping-note {
+            font-size: 13px;
+            color: #687083;
+            line-height: 1.5;
+        }
+
+        .pp-shipping-note strong {
+            color: #172033;
+        }
+
+        .pp-dispatch {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #1a9c5c;
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .pp-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .pp-tags span {
+            background: #eafaf0;
+            color: #1a9c5c;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+
+        .pp-security-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 20px;
+            font-size: 13px;
+            color: #687083;
+        }
+
+        .pp-seller-card {
+            padding: 16px 18px;
+            border-top: 8px solid #f7f8fa;
+        }
+
+        .pp-seller-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 15px;
+            color: #172033;
+            margin-bottom: 14px;
+        }
+
+        .pp-seller-logo {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #071a49;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .pp-seller-stats {
+            display: flex;
+            text-align: center;
+            margin-bottom: 14px;
+        }
+
+        .pp-seller-stats > div {
+            flex: 1;
+        }
+
+        .pp-seller-stats strong {
+            display: block;
+            font-size: 18px;
+            color: #172033;
+        }
+
+        .pp-seller-stats span {
+            font-size: 12px;
+            color: #687083;
+        }
+
+        .pp-seller-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .pp-seller-actions a {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #0875e1;
+            color: #0875e1;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .pp-bottombar {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 8px 14px;
+            border-top: 1px solid #e5e7eb;
+            background: #fff;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .pp-icon-actions {
+            display: flex;
+            gap: 14px;
+            flex-shrink: 0;
+        }
+
+        .pp-icon-actions a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            font-size: 10px;
+            color: #687083;
+        }
+
+        .pp-icon-actions a span:first-child {
+            font-size: 19px;
+        }
+
+        .popup-actions {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .popup-actions button {
+            flex: 1;
+            height: 42px;
+            border-radius: 21px;
+            font-size: 14px;
+        }
+
+        .buy-now-btn {
+            border: none;
+            background: #071a49;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity .2s ease;
+        }
+
+        .buy-now-btn:hover {
+            opacity: .9;
+        }
+
+        footer {
+            background: #071a49;
+            color: white;
+            margin-top: 35px;
+        }
+
+        .footer-main {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1.3fr;
+            gap: 40px;
+            padding: 45px 5%;
+        }
+
+        .footer-brand h2,
+        .brand-section h2 {
+            font-size: 25px;
+            margin-bottom: 15px;
+        }
+
+        .footer-brand p,
+        .brand-section p {
+            color: #c5cede;
+            font-size: 12px;
+            line-height: 1.7;
+            max-width: 250px;
+            margin-bottom: 18px;
+        }
+
+        footer h3 {
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        footer ul {
+            list-style: none;
+        }
+
+        footer li {
+            color: #c5cede;
+            font-size: 12px;
+            margin-bottom: 11px;
+        }
+
+        .footer-section a {
+            display: block;
+            color: #c5cede;
+            font-size: 12px;
+            margin-bottom: 11px;
+            transition: color .2s ease, padding-left .2s ease;
+        }
+
+        .footer-section a:hover {
+            color: #4fc3ff;
+            padding-left: 4px;
+        }
+
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: auto;
+            height: 34px;
+            padding: 0 14px;
+            margin: 0;
+            border-radius: 17px;
+            background: rgba(255,255,255,.1);
+            font-size: 11px;
+            font-weight: 600;
+            transition: background .2s ease, transform .2s ease;
+        }
+
+        .social-links a:hover {
+            background: #0875e1;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .newsletter-note {
+            color: #c5cede;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            margin-top: 4px;
+            max-width: 320px;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            min-width: 0;
+            padding: 12px;
+            border: none;
+            border-radius: 6px 0 0 6px;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .newsletter-form button {
+            border: none;
+            border-radius: 0 6px 6px 0;
+            background: #0875e1;
+            color: white;
+            font-weight: bold;
+            padding: 0 18px;
+            cursor: pointer;
+            transition: background .2s ease;
+        }
+
+        .newsletter-form button:hover {
+            background: #075fc0;
+        }
+
+        #newsletterMessage {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #a9bce0;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,.12);
+            padding: 18px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #b8c2d4;
+            font-size: 11px;
+        }
+
+        .payment-methods {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 900px) {
+
+            .main-header {
+                height: auto;
+                padding: 12px 3%;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .logo {
+                width: 135px;
+            }
+
+            .logo img {
+                width: 125px;
+            }
+
+            .search-box {
+                order: 3;
+                flex-basis: 100%;
+            }
+
+            .header-actions {
+                margin-left: auto;
+                gap: 10px;
+            }
+
+            .action-text {
+                display: none;
+            }
+
+            .categories {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .products {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .showcase-grid {
+                gap: 10px;
+            }
+
+            .benefits {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .benefit:nth-child(2) {
+                border-right: none;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 550px) {
+
+            body {
+                overflow-x: hidden;
+            }
+
+            .top-right {
+                display: none;
+            }
+
+            .nav {
+                height: 42px;
+                gap: 20px;
+                padding-left: 15px;
+                scrollbar-width: none;
+            }
+
+            .nav::-webkit-scrollbar {
+                display: none;
+            }
+
+            .showcase-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .showcase-tile-overlay strong {
+                font-size: 13px;
+            }
+
+            .categories {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .products {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .product-image {
+                height: 145px;
+                flex-basis: 145px;
+            }
+
+            .product-info {
+                padding: 9px;
+            }
+
+            .product-name {
+                font-size: 12px;
+            }
+
+            .rating {
+                font-size: 11px;
+            }
+
+            .cart-btn {
+                min-height: 38px;
+                height: auto;
+                padding: 9px 5px;
+                font-size: 12px;
+            }
+
+            .buy-btn {
+                min-height: 38px;
+                padding: 8px 5px;
+                font-size: 11px;
+            }
+
+            .price {
+                font-size: 15px;
+            }
+
+            .promo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .benefits {
+                grid-template-columns: 1fr;
+            }
+
+            .benefit {
+                border-right: none;
+                border-bottom: 1px solid #eee;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr;
+                padding: 35px 7%;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="top-bar">
+    <span>Welcome to PHYNEX</span>
+
+    <div class="top-right">
+        <a href="sell.html">Sell on PHYNEX</a>
+        <a href="help.html">Help Centre</a>
+        <a href="delivery.html#tracking">Track Order</a>
+    </div>
+</div>
+
+
+<header class="main-header">
+
+    <div class="logo">
+        <img src="1.jpeg" alt="PHYNEX">
+    </div>
+
+    <div class="search-box">
+        <input id="searchInput"
+            type="text"
+            placeholder="Search products, brands and categories"
+        >
+
+        <button id="searchButton" type="button">Search</button>
+    </div>
+
+    <div class="header-actions">
+
+       
+        <a class="action" href="delivery.html#tracking">
+            <span class="action-icon"><i class="fa-solid fa-box"></i></span>
+            <div class="action-text">
+                Orders
+                <small>Track</small>
+            </div>
+        </a>
+
+        <a class="action" href="cart.html">
+            <span class="action-icon"><i class="fa-solid fa-cart-shopping"></i></span>
+            <div class="action-text">
+                Cart
+                <small id="cart-count">0 items</small>
+            </div>
+        </a>
+
+    </div>
+
+</header>
+
+
+<nav class="nav" id="categoryNav">
+
+    <div class="nav-item" data-category="all"><i class="fa-solid fa-bars"></i> All Categories</div>
+    <div class="nav-item" data-category="Phones & Tablets">Phones & Tablets</div>
+    <div class="nav-item" data-category="Computers & Laptops">Computers</div>
+    <div class="nav-item" data-category="Electronics">Electronics</div>
+    <div class="nav-item" data-category="Gaming">Gaming</div>
+    <div class="nav-item" data-category="Accessories">Accessories</div>
+    <div class="nav-item" data-category="Home & Office">Home & Office</div>
+    <div class="nav-item deals" data-category="deals">Deals</div>
+
+</nav>
+
+
+<!--
+    ADVERTISEMENT CAROUSEL
+    Replace the src on each <img> below with your own ad images
+    (recommended size: roughly 1600x500px, same ratio for all).
+    Add or remove <img> + matching <span> pairs to add more slides.
+-->
+<div class="ad-carousel" id="adCarousel">
+    <div class="ad-carousel-track" id="adCarouselTrack">
+        <div class="ad-slide">
+            <img src="15.jpeg" alt="PHYNEX delivery across Kenya" onerror="this.classList.add('broken')">
+        </div>
+        <div class="ad-slide">
+            <img src="14.jpeg" alt="Laptop computers at PHYNEX" onerror="this.classList.add('broken')">
+        </div>
+        <div class="ad-slide">
+            <img src="20.jpeg" alt="Desktop computers at PHYNEX" onerror="this.classList.add('broken')">
+        </div>
+    </div>
+    <div class="ad-carousel-dots" id="adCarouselDots">
+        <span class="active" data-slide="0"></span>
+        <span data-slide="1"></span>
+        <span data-slide="2"></span>
+    </div>
+</div>
+
+
+<main>
+
+<!--
+    SPONSORED PRODUCTS — populated at runtime from approved seller
+    listings that an admin has flagged as sponsored (see script.js
+    at the bottom of the page / admin-dashboard.html). The whole
+    section hides itself automatically if there are none yet.
+-->
+<div class="section-heading" id="sponsoredSection" style="display:none;">
+    <div class="flash-title">
+        <h2><span class="heading-icon"><i class="fa-solid fa-star"></i></span>Sponsored</h2>
+    </div>
+</div>
+
+<div class="products" id="sponsoredGrid" style="display:none;"></div>
+
+
+<!--
+    SHOWCASE — replace each <img> src below with your own product
+    photo (recommended ~800x900px, portrait). This grid doubles as
+    quick category links, same as before.
+-->
+<section class="showcase">
+    <div class="showcase-grid">
+
+        <a class="showcase-tile" href="javascript:void(0)" data-category="Phones & Tablets">
+            <img src="3.jpeg" alt="Phones and tablets" loading="lazy" onerror="this.classList.add('broken')">
+            <div class="showcase-tile-overlay">
+                <strong>Phones & Tablets</strong>
+                <span>Shop now</span>
+            </div>
+        </a>
+
+        <a class="showcase-tile" href="javascript:void(0)" data-category="Computers & Laptops">
+            <img src="14.jpeg" alt="Laptop computer" loading="lazy" onerror="this.classList.add('broken')">
+            <div class="showcase-tile-overlay">
+                <strong>Computers</strong>
+                <span>Shop now</span>
+            </div>
+        </a>
+
+        <a class="showcase-tile" href="javascript:void(0)" data-category="Gaming">
+            <img src="8.jpeg" alt="PlayStation console and controller" loading="lazy" onerror="this.classList.add('broken')">
+            <div class="showcase-tile-overlay">
+                <strong>Gaming</strong>
+                <span>Shop now</span>
+            </div>
+        </a>
+
+        <a class="showcase-tile" href="javascript:void(0)" data-category="Accessories">
+            <img src="13.jpeg" alt="Wireless headphones" loading="lazy" onerror="this.classList.add('broken')">
+            <div class="showcase-tile-overlay">
+                <strong>Accessories</strong>
+                <span>Shop now</span>
+            </div>
+        </a>
+
+    </div>
+</section>
+
+
+<div class="ad-strip">
+    <div class="ad-strip-text">
+        <strong>PHYNEX EXPRESS</strong> — Same-day delivery in Malindi on orders placed before 2PM.
+    </div>
+    <a href="delivery.html" class="ad-strip-link">Learn more →</a>
+</div>
+
+
+<div class="section-heading" id="newArrivalsSection">
+
+    <h2><span class="heading-icon"><i class="fa-solid fa-star"></i></span>New Arrivals</h2>
+
+    <a href="#newArrivalsSection" class="view-all">
+        View All New Arrivals
+    </a>
+
+</div>
+
+<div class="products" id="newArrivalsGrid">
+    <!-- Populated automatically from products tagged data-category="...new" -->
+</div>
+
+
+<div class="section-heading">
+
+    <h2><span class="heading-icon"><i class="fa-solid fa-grip"></i></span>Shop by Category</h2>
+
+    <a href="categories.html" class="view-all">
+        View All Categories
+    </a>
+
+</div>
+
+
+<div class="categories">
+
+    <div class="category" data-category="Phones & Tablets" style="--accent:#0875e1;">
+        <span class="cat-badge"><i class="fa-solid fa-mobile-screen-button"></i></span>
+        <img src="pic 11.jpeg" alt="Smartphones" loading="lazy">
+        <span>Phones & Tablets</span>
+    </div>
+
+    <div class="category" data-category="Computers & Laptops" style="--accent:#7c3aed;">
+        <span class="cat-badge"><i class="fa-solid fa-desktop"></i></span>
+        <img src="20.jpeg" alt="Desktop computer" loading="lazy">
+        <span>Computers</span>
+    </div>
+
+    <div class="category" data-category="Computers & Laptops" style="--accent:#0e9f6e;">
+        <span class="cat-badge"><i class="fa-solid fa-laptop"></i></span>
+        <img src="10.jpeg" alt="Laptop computer" loading="lazy">
+        <span>Laptops</span>
+    </div>
+
+    <div class="category" data-category="Gaming" style="--accent:#e53935;">
+        <span class="cat-badge"><i class="fa-solid fa-gamepad"></i></span>
+        <img src="8.jpeg" alt="Gaming console" loading="lazy">
+        <span>Gaming</span>
+    </div>
+
+    <div class="category" data-category="Accessories" style="--accent:#f59e0b;">
+        <span class="cat-badge"><i class="fa-solid fa-plug"></i></span>
+        <img src="18.jpeg" alt="USB accessories" loading="lazy">
+        <span>Accessories</span>
+    </div>
+
+    <div class="category" data-category="Electronics" style="--accent:#0891b2;">
+        <span class="cat-badge"><i class="fa-solid fa-clock"></i></span>
+        <img src="7.jpeg" alt="Smart watches" loading="lazy">
+        <span>Smart Watch</span>
+    </div>
+
+    <div class="category" data-category="Electronics" style="--accent:#db2777;">
+        <span class="cat-badge"><i class="fa-solid fa-headphones"></i></span>
+        <img src="2.jpeg" alt="Audio headphones" loading="lazy">
+        <span>Audio</span>
+    </div>
+
+</div>
+
+
+<div class="section-heading" id="productsSection">
+
+    <div class="flash-title">
+
+        <h2><span class="heading-icon"><i class="fa-solid fa-bolt"></i></span>Flash Deals</h2>
+
+        <span class="timer" id="flashDealsTimer">
+            <i class="fa-regular fa-clock"></i> Ends in: 03 : 00 : 00
+        </span>
+
+    </div>
+
+    <a href="#productsSection" class="view-all">
+        View All Deals
+    </a>
+
+</div>
+
+
+<div class="products" id="flashDealsGrid">
+</div>
+<p id="searchMessage" hidden style="padding:24px;text-align:center;color:#687083;background:white;border:1px solid #e1e4e8;">No products found.</p>
+
+
+<div class="promo-grid">
+
+    <div class="promo">
+
+        <h2>
+            Level Up Your<br>
+            <span>Gaming Experience</span>
+        </h2>
+
+        <p>
+            Top gaming gear, chairs,
+            consoles and accessories.
+        </p>
+
+        <button class="shop-btn" id="gamingButton" type="button">
+            EXPLORE GAMING
+        </button>
+
+        <img class="promo-moving" src="8.jpeg" alt="Gaming console" loading="lazy">
+        
+
+    </div>
+
+
+    <div class="promo light">
+
+        <h2>
+            New Arrivals<br>
+            <span>Just Landed</span>
+        </h2>
+
+        <p>
+            Check out the latest
+            technology products in store.
+        </p>
+
+        <button class="shop-btn" id="newArrivalsButton" type="button">
+            SHOP NOW
+        </button>
+
+        <img class="promo-moving" src="16.jpeg" alt="Technology products" loading="lazy">
+        
+        
+
+    </div>
+
+</div>
+
+
+<div class="benefits">
+
+    <div class="benefit">
+        <div class="benefit-icon"><i class="fa-solid fa-truck-fast"></i></div>
+        <div>
+            <strong>Fast Delivery</strong>
+            <p>Delivery across Kenya</p>
+        </div>
+    </div>
+
+    <div class="benefit">
+        <div class="benefit-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <div>
+            <strong>Secure Payments</strong>
+            <p>Safe and secure checkout</p>
+        </div>
+    </div>
+
+    <div class="benefit">
+        <div class="benefit-icon"><i class="fa-solid fa-circle-check"></i></div>
+        <div>
+            <strong>Genuine Products</strong>
+            <p>Original products only</p>
+        </div>
+    </div>
+
+    <div class="benefit">
+        <div class="benefit-icon"><i class="fa-solid fa-headset"></i></div>
+        <div>
+            <strong>Customer Support</strong>
+            <p>We are here to help</p>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="product-popup" id="productPopup" role="dialog" aria-modal="true" aria-labelledby="modalProductName">
+
+    <div class="pp-topbar">
+        <button class="product-popup-close" type="button" aria-label="Close product details">&larr;</button>
+        <span class="pp-topbar-title">Product Details</span>
+    </div>
+
+    <div class="product-popup-content">
+
+        <div class="pp-gallery">
+            <img class="product-popup-image" id="modalProductImage" src="" alt="Product">
+            <span class="pp-gallery-counter">1/1</span>
+        </div>
+
+        <div class="pp-info">
+            <div class="pp-price-row">
+                <span class="product-popup-price" id="modalProductPrice"></span>
+                <span class="old-price" id="modalOldPrice"></span>
+                <span class="product-popup-discount" id="modalProductDiscount"></span>
+            </div>
+
+            <h2 class="product-popup-title" id="modalProductName"></h2>
+            <div class="product-popup-rating" id="modalProductRating"></div>
+
+            <span class="pp-express-badge" id="modalProductExpress">PHYNEX EXPRESS</span>
+        </div>
+
+        <div class="pp-qty-row">
+            <span>Quantity</span>
+            <div class="quantity-controls" aria-label="Quantity">
+                <button type="button" id="decreaseQty" aria-label="Decrease quantity">-</button>
+                <span id="productQty">1</span>
+                <button type="button" id="increaseQty" aria-label="Increase quantity">+</button>
+            </div>
+        </div>
+
+        <div class="pp-tabs">
+            <button class="pp-tab active" type="button" data-tab="ppDescription">Description</button>
+            <button class="pp-tab" type="button" data-tab="ppSpecs">Specifications</button>
+            <button class="pp-tab" type="button" data-tab="ppReviews">Reviews</button>
+        </div>
+
+        <div class="pp-tab-panel active" id="ppDescription">
+            <p class="product-popup-description" id="modalProductDescription"></p>
+        </div>
+
+        <div class="pp-tab-panel" id="ppSpecs">
+            <p class="product-popup-specifications" id="modalProductSpecifications"></p>
+        </div>
+
+        <div class="pp-tab-panel" id="ppReviews">
+            <p class="pp-reviews-empty">No reviews yet for this product. Be the first to leave one after your order.</p>
+        </div>
+
+        <div class="pp-section">
+            <div class="pp-dispatch"><i class="fa-solid fa-location-dot"></i> Local Dispatch</div>
+            <p class="pp-shipping-note">Ships from <strong id="modalShipFrom">Location not provided</strong>. Select a delivery address at checkout to see delivery times for your area.</p>
+        </div>
+
+        <div class="pp-section">
+            <div class="pp-section-title"><i class="fa-solid fa-shield-halved"></i> Warranty Options</div>
+            <div class="pp-tags">
+                <span>7-Day No-Reason Return</span>
+                <span>7-Day Return</span>
+                <span>7-Day Exchange</span>
+                <span>120-Day Support</span>
+            </div>
+            <p class="pp-shipping-note">All details at <a href="waranty.html" style="color:#0875e1;font-weight:bold;">Warranty Policy</a></p>
+        </div>
+
+        <div class="pp-section">
+            <div class="pp-section-title"><i class="fa-solid fa-lock"></i> Shopping Security</div>
+            <div class="pp-security-grid">
+                <span><i class="fa-solid fa-check"></i> Safe Payments</span>
+                <span><i class="fa-solid fa-check"></i> Secure Logistics</span>
+                <span><i class="fa-solid fa-check"></i> Secure Privacy</span>
+                <span><i class="fa-solid fa-check"></i> Purchase Protection</span>
+            </div>
+        </div>
+
+        <div class="pp-section" id="modalTrackingRow" style="display:none;">
+            <div class="pp-section-title"><i class="fa-solid fa-barcode"></i> Product Tracking Code</div>
+            <p class="pp-shipping-note">This product's tracking number is <strong id="modalTrackingCode"></strong>. Look it up any time on the <a href="track-product.html" style="color:#0875e1;font-weight:bold;">Track Product</a> page.</p>
+        </div>
+
+        <div class="pp-seller-card">
+            <div class="pp-seller-head">
+                <span class="pp-seller-logo" id="modalSellerLogo">PX</span>
+                <span id="modalSellerName">PHYNEX</span>
+            </div>
+            <div class="pp-seller-actions">
+                <a href="index.html">Visit Store</a>
+                <a href="#" id="modalSellerWhatsapp" target="_blank" rel="noopener">
+                    <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+                </a>
+                <a href="#" id="modalSellerCall">
+                    <i class="fa-solid fa-phone"></i> Call Seller
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="pp-bottombar">
+        <div class="pp-icon-actions">
+            <a href="#" id="modalSellerWhatsappBottom" target="_blank" rel="noopener">
+                <span><i class="fa-brands fa-whatsapp"></i></span>Chat
+            </a>
+            <a href="index.html">
+                <span><i class="fa-solid fa-store"></i></span>Store
+            </a>
+            <a href="checkout.html">
+                <span><i class="fa-solid fa-cart-shopping"></i></span>Cart
+            </a>
+        </div>
+        <div class="popup-actions">
+            <button class="cart-btn" type="button" id="modalAddToCart">Add to Cart</button>
+            <button class="buy-now-btn" type="button" id="modalBuyNow">Order Now</button>
+        </div>
+    </div>
+
+</div>
+
+<nav class="mobile-bottom-nav">
+
+    <a class="mbn-item active" href="index.html">
+        <img class="mbn-logo" src="1.jpeg" alt="PHYNEX">
+        Home
+    </a>
+
+    <a class="mbn-item" href="#categoryNav">
+        <i class="fa-solid fa-list"></i>
+        Category
+    </a>
+
+    <a class="mbn-item" href="https://wa.me/254793977389" target="_blank" rel="noopener">
+        <i class="fa-regular fa-comment-dots"></i>
+        Message
+    </a>
+
+    <a class="mbn-item" href="cart.html">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="mbn-badge" id="mbnCartCount">0</span>
+        Cart
+    </a>
+
+    <a class="mbn-item" href="account.html">
+        <i class="fa-solid fa-user"></i>
+        Account
+    </a>
+
+</nav>
+
+<footer class="phynex-footer">
+    <div class="footer-main">
+        <div class="footer-section brand-section">
+            <h2>PHYNEX</h2>
+            <p>Your trusted online store for electronics, computers, gaming gear and more.</p>
+            <div class="social-links">
+                <a href="https://www.facebook.com/" target="_blank" rel="noopener">Facebook</a>
+                <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+                <a href="https://wa.me/254793977389
+        " target="_blank" rel="noopener">WhatsApp</a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h3>Customer Service</h3>
+            <a href="help.html">Help Centre</a>
+            <a href="delivery.html">Delivery Information</a>
+            <a href="returns.html">Returns & Refunds</a>
+            <a href="waranty.html">Warranty</a>
+            <a href="contact.html">Contact Us</a>
+        </div>
+
+        <div class="footer-section">
+            <h3>About PHYNEX</h3>
+            <a href="about.html">About Us</a>
+            <a href="sell.html">Sell on PHYNEX</a>
+            <a href="careers.html">Careers</a>
+            <a href="blog.html">News & Blog</a>
+            <a href="terms.html">Terms & Conditions</a>
+        </div>
+
+        <div class="footer-section newsletter-section">
+            <h3>Newsletter</h3>
+            <p class="newsletter-note">Get exclusive deals and new product updates.</p>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" id="newsletterEmail" placeholder="Enter your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+            <p id="newsletterMessage"></p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 PHYNEX. All Rights Reserved.</p>
+        <div class="payment-methods">
+            <span>VISA</span><span>•</span><span>M-PESA</span><span>•</span><span>PayPal</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Switches between Description / Specifications / Reviews
+    // inside the full-page product view. Purely visual — does not
+    // touch cart, checkout or product data logic in script.js.
+    document.addEventListener('DOMContentLoaded', function () {
+        var tabs = document.querySelectorAll('.pp-tab');
+
+        tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                tabs.forEach(function (t) { t.classList.remove('active'); });
+                document.querySelectorAll('.pp-tab-panel').forEach(function (panel) {
+                    panel.classList.remove('active');
+                });
+
+                tab.classList.add('active');
+                var panel = document.getElementById(tab.dataset.tab);
+                if (panel) panel.classList.add('active');
+            });
+        });
+
+        // Reset to the Description tab and scroll the page to the
+        // top every time a product is opened.
+        var popup = document.getElementById('productPopup');
+        if (popup) {
+            var observer = new MutationObserver(function () {
+                if (popup.classList.contains('show')) {
+                    tabs.forEach(function (t) { t.classList.remove('active'); });
+                    document.querySelectorAll('.pp-tab-panel').forEach(function (panel) {
+                        panel.classList.remove('active');
+                    });
+                    var firstTab = document.querySelector('.pp-tab');
+                    var firstPanel = document.getElementById('ppDescription');
+                    if (firstTab) firstTab.classList.add('active');
+                    if (firstPanel) firstPanel.classList.add('active');
+
+                    var content = document.querySelector('.product-popup-content');
+                    if (content) content.scrollTop = 0;
+                }
+            });
+            observer.observe(popup, { attributes: true, attributeFilter: ['class'] });
+        }
+    });
+</script>
+
+<script>
+    // Fades + slides each product card into view as it scrolls into
+    // the viewport, with a slight stagger across a row so cards don't
+    // all pop in at once. Runs after the New Arrivals grid has been
+    // populated (that script runs synchronously above) so those
+    // cloned cards get the effect too.
+    document.addEventListener('DOMContentLoaded', function () {
+        var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduceMotion || !('IntersectionObserver' in window)) return;
+
+        var cards = document.querySelectorAll('.products .product');
+
+        cards.forEach(function (card, i) {
+            card.classList.add('reveal');
+            // Stagger cards in roughly the same row (assumes ~4 per row
+            // on desktop; harmless if the actual column count differs).
+            card.style.transitionDelay = (i % 4) * 80 + 'ms';
+        });
+
+        var observer = new IntersectionObserver(function (entries, obs) {
+            entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                var card = entry.target;
+                card.classList.add('in-view');
+                obs.unobserve(card);
+                // Once the transition finishes, drop the 'reveal' class
+                // entirely so it stops overriding the hover transform.
+                card.addEventListener('transitionend', function handler(e) {
+                    if (e.propertyName !== 'transform') return;
+                    card.classList.remove('reveal', 'in-view');
+                    card.style.transitionDelay = '';
+                    card.removeEventListener('transitionend', handler);
+                });
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+        cards.forEach(function (card) { observer.observe(card); });
+    });
+</script>
+
+<script>
+    // Keeps the mobile bottom-nav Cart badge in sync with the
+    // header's cart-count element (updated by script.js), by
+    // watching it for changes instead of duplicating cart logic.
+    (function () {
+        var source = document.getElementById('cart-count');
+        var badge = document.getElementById('mbnCartCount');
+        if (!source || !badge) return;
+
+        function sync() {
+            var n = parseInt((source.textContent || '').replace(/\D/g, ''), 10);
+            badge.textContent = isNaN(n) ? '0' : n;
+            badge.style.display = n > 0 ? 'flex' : 'none';
+        }
+
+        sync();
+        new MutationObserver(sync).observe(source, { childList: true, characterData: true, subtree: true });
+    })();
+</script>
+
+<script>
+    // Promo buttons use the store's real category/filter controls.
+    // Clicking Explore Gaming selects Gaming in the existing product store
+    // and brings the matching products into view instead of doing nothing.
+    document.addEventListener('DOMContentLoaded', function () {
+        var gamingButton = document.getElementById('gamingButton');
+        var gamingNav = document.querySelector('.nav-item[data-category="Gaming"]');
+
+        if (gamingButton) {
+            gamingButton.addEventListener('click', function () {
+                if (gamingNav) {
+                    gamingNav.click();
+                }
+
+                var productsSection = document.getElementById('productsSection');
+                if (productsSection) {
+                    setTimeout(function () {
+                        productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 80);
+                }
+            });
+        }
+
+        var newArrivalsButton = document.getElementById('newArrivalsButton');
+        if (newArrivalsButton) {
+            newArrivalsButton.addEventListener('click', function () {
+                var newArrivals = document.getElementById('newArrivalsSection');
+                if (newArrivals) {
+                    newArrivals.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        }
+    });
+</script>
+
+<script src="script.js"></script>
+
+</body>
+</html>

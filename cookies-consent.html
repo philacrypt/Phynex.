@@ -1,0 +1,257 @@
+/*
+  PHYNEX Cookie Consent
+  ---------------------
+  Include this on every page, just before </body>:
+      <script src="cookie-consent.js"></script>
+
+  What it does:
+  - Shows a bottom banner on first visit (Accept all / Reject non-essential / Manage preferences)
+  - Lets visitors toggle Analytics and Marketing cookies individually (Necessary is always on)
+  - Remembers the choice in localStorage so the banner doesn't show again
+  - Adds a small "Cookie settings" tab so visitors can change their mind anytime
+  - Fires a "phynexConsentUpdated" event other scripts (e.g. analytics) can listen for
+    before loading, so you only load tracking scripts once consent is given:
+
+      window.addEventListener('phynexConsentUpdated', function (e) {
+          if (e.detail.analytics) { /* load analytics script here */ }
+          if (e.detail.marketing) { /* load marketing/ad pixels here */ }
+      });
+*/
+
+(function () {
+    const STORAGE_KEY = 'phynex_cookie_consent';
+
+    function getConsent() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            return raw ? JSON.parse(raw) : null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function saveConsent(consent) {
+        const record = Object.assign({ necessary: true, timestamp: new Date().toISOString() }, consent);
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(record)); } catch (e) {}
+        window.dispatchEvent(new CustomEvent('phynexConsentUpdated', { detail: record }));
+        return record;
+    }
+
+    function injectStyles() {
+        const style = document.createElement('style');
+        style.textContent = `
+        .pnx-consent-overlay { position: fixed; inset: 0; background: rgba(11,17,32,0.45); z-index: 9998; display: none; }
+        .pnx-consent-overlay.pnx-show { display: block; }
+
+        .pnx-banner {
+            position: fixed; left: 0; right: 0; bottom: 0; z-index: 9999;
+            background: #fff; border-top: 1px solid #e3e6ee;
+            box-shadow: 0 -12px 30px -18px rgba(8,26,79,0.35);
+            padding: 20px 6%; font-family: 'Inter', Arial, sans-serif; color: #131a2c;
+            display: none;
+        }
+        .pnx-banner.pnx-show { display: flex; }
+        .pnx-banner-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; width: 100%; }
+        .pnx-banner p { margin: 0; font-size: 13.5px; line-height: 1.55; color: #5b6478; max-width: 620px; }
+        .pnx-banner a { color: #0b3fae; font-weight: 600; text-decoration: none; }
+        .pnx-banner a:hover { text-decoration: underline; }
+        .pnx-banner-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .pnx-btn { font-family: inherit; font-size: 13.5px; font-weight: 700; padding: 11px 18px; border-radius: 8px; cursor: pointer; border: 1.5px solid transparent; white-space: nowrap; }
+        .pnx-btn-primary { background: #0b3fae; color: #fff; }
+        .pnx-btn-primary:hover { background: #082a7a; }
+        .pnx-btn-outline { background: #fff; color: #0b3fae; border-color: #d7deef; }
+        .pnx-btn-outline:hover { background: #eef3ff; }
+        .pnx-btn-ghost { background: transparent; color: #5b6478; border-color: transparent; text-decoration: underline; padding: 11px 6px; }
+
+        .pnx-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;
+            background: #fff; border-radius: 14px; width: min(480px, 90vw); max-height: 84vh; overflow-y: auto;
+            box-shadow: 0 30px 60px -20px rgba(8,26,79,0.45); font-family: 'Inter', Arial, sans-serif; color: #131a2c;
+            display: none; padding: 30px; }
+        .pnx-modal.pnx-show { display: block; }
+        .pnx-modal h2 { font-family: 'Space Grotesk', 'Inter', sans-serif; font-size: 19px; margin: 0 0 6px; }
+        .pnx-modal > p { font-size: 13.5px; color: #5b6478; margin: 0 0 20px; line-height: 1.55; }
+        .pnx-pref-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding: 14px 0; border-bottom: 1px solid #eef0f5; }
+        .pnx-pref-row:last-of-type { border-bottom: none; }
+        .pnx-pref-row h3 { font-size: 14px; margin: 0 0 4px; }
+        .pnx-pref-row p { font-size: 12.5px; color: #5b6478; margin: 0; max-width: 320px; }
+        .pnx-switch { position: relative; width: 42px; height: 24px; flex: none; margin-top: 2px; }
+        .pnx-switch input { opacity: 0; width: 0; height: 0; }
+        .pnx-slider { position: absolute; inset: 0; background: #d7deef; border-radius: 999px; cursor: pointer; transition: background .15s ease; }
+        .pnx-slider::before { content: ""; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: transform .15s ease; }
+        .pnx-switch input:checked + .pnx-slider { background: #0b3fae; }
+        .pnx-switch input:checked + .pnx-slider::before { transform: translateX(18px); }
+        .pnx-switch input:disabled + .pnx-slider { background: #9db2e6; cursor: not-allowed; }
+        .pnx-modal-actions { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+
+        .pnx-tab {
+            position: fixed; left: 18px; bottom: 18px; z-index: 9997;
+            background: #0b3fae; color: #fff; border: none; border-radius: 999px;
+            padding: 10px 16px; font-family: 'Inter', Arial, sans-serif; font-size: 12.5px; font-weight: 700;
+            cursor: pointer; box-shadow: 0 10px 24px -10px rgba(8,26,79,0.5); display: none; align-items: center; gap: 6px;
+        }
+        .pnx-tab.pnx-show { display: inline-flex; }
+        .pnx-tab:hover { background: #082a7a; }
+
+        @media (max-width: 700px) {
+            .pnx-banner-inner { flex-direction: column; align-items: stretch; }
+            .pnx-banner-actions { justify-content: stretch; }
+            .pnx-btn { flex: 1; text-align: center; }
+        }
+        `;
+        document.head.appendChild(style);
+    }
+
+    function buildBanner() {
+        const banner = document.createElement('div');
+        banner.className = 'pnx-banner';
+        banner.id = 'pnxBanner';
+        banner.innerHTML = `
+            <div class="pnx-banner-inner">
+                <p>We use cookies to run PHYNEX, keep your cart working, and — if you allow it — understand how the site is used. Read our <a href="cookies.html">Cookie Policy</a>.</p>
+                <div class="pnx-banner-actions">
+                    <button class="pnx-btn pnx-btn-ghost" id="pnxManageBtn" type="button">Manage preferences</button>
+                    <button class="pnx-btn pnx-btn-outline" id="pnxRejectBtn" type="button">Reject non-essential</button>
+                    <button class="pnx-btn pnx-btn-primary" id="pnxAcceptBtn" type="button">Accept all</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(banner);
+        return banner;
+    }
+
+    function buildModal() {
+        const overlay = document.createElement('div');
+        overlay.className = 'pnx-consent-overlay';
+        overlay.id = 'pnxOverlay';
+        document.body.appendChild(overlay);
+
+        const modal = document.createElement('div');
+        modal.className = 'pnx-modal';
+        modal.id = 'pnxModal';
+        modal.innerHTML = `
+            <h2>Cookie preferences</h2>
+            <p>Choose which cookies PHYNEX can use. Necessary cookies keep the site and your cart working and can't be switched off.</p>
+
+            <div class="pnx-pref-row">
+                <div>
+                    <h3>Necessary</h3>
+                    <p>Required for core features like your shopping cart and checkout.</p>
+                </div>
+                <label class="pnx-switch">
+                    <input type="checkbox" checked disabled>
+                    <span class="pnx-slider"></span>
+                </label>
+            </div>
+
+            <div class="pnx-pref-row">
+                <div>
+                    <h3>Analytics</h3>
+                    <p>Helps us understand how visitors use PHYNEX so we can improve it.</p>
+                </div>
+                <label class="pnx-switch">
+                    <input type="checkbox" id="pnxAnalyticsToggle">
+                    <span class="pnx-slider"></span>
+                </label>
+            </div>
+
+            <div class="pnx-pref-row">
+                <div>
+                    <h3>Marketing</h3>
+                    <p>Used to show you more relevant offers on and off PHYNEX.</p>
+                </div>
+                <label class="pnx-switch">
+                    <input type="checkbox" id="pnxMarketingToggle">
+                    <span class="pnx-slider"></span>
+                </label>
+            </div>
+
+            <div class="pnx-modal-actions">
+                <button class="pnx-btn pnx-btn-outline" id="pnxCloseModalBtn" type="button">Cancel</button>
+                <button class="pnx-btn pnx-btn-primary" id="pnxSavePrefsBtn" type="button">Save preferences</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        return { overlay, modal };
+    }
+
+    function buildTab() {
+        const tab = document.createElement('button');
+        tab.className = 'pnx-tab';
+        tab.id = 'pnxTab';
+        tab.type = 'button';
+        tab.textContent = '🍪 Cookie settings';
+        document.body.appendChild(tab);
+        return tab;
+    }
+
+    function init() {
+        injectStyles();
+        const banner = buildBanner();
+        const { overlay, modal } = buildModal();
+        const tab = buildTab();
+
+        const acceptBtn = document.getElementById('pnxAcceptBtn');
+        const rejectBtn = document.getElementById('pnxRejectBtn');
+        const manageBtn = document.getElementById('pnxManageBtn');
+        const closeModalBtn = document.getElementById('pnxCloseModalBtn');
+        const savePrefsBtn = document.getElementById('pnxSavePrefsBtn');
+        const analyticsToggle = document.getElementById('pnxAnalyticsToggle');
+        const marketingToggle = document.getElementById('pnxMarketingToggle');
+
+        function hideBanner() { banner.classList.remove('pnx-show'); }
+        function showBanner() { banner.classList.add('pnx-show'); }
+        function showTab() { tab.classList.add('pnx-show'); }
+
+        function openModal() {
+            const existing = getConsent();
+            analyticsToggle.checked = existing ? !!existing.analytics : false;
+            marketingToggle.checked = existing ? !!existing.marketing : false;
+            overlay.classList.add('pnx-show');
+            modal.classList.add('pnx-show');
+        }
+        function closeModal() {
+            overlay.classList.remove('pnx-show');
+            modal.classList.remove('pnx-show');
+        }
+
+        acceptBtn.addEventListener('click', function () {
+            saveConsent({ analytics: true, marketing: true });
+            hideBanner(); showTab();
+        });
+
+        rejectBtn.addEventListener('click', function () {
+            saveConsent({ analytics: false, marketing: false });
+            hideBanner(); showTab();
+        });
+
+        manageBtn.addEventListener('click', openModal);
+        closeModalBtn.addEventListener('click', closeModal);
+        overlay.addEventListener('click', closeModal);
+
+        savePrefsBtn.addEventListener('click', function () {
+            saveConsent({ analytics: analyticsToggle.checked, marketing: marketingToggle.checked });
+            closeModal(); hideBanner(); showTab();
+        });
+
+        tab.addEventListener('click', openModal);
+
+        const existing = getConsent();
+        if (existing) {
+            showTab();
+            window.dispatchEvent(new CustomEvent('phynexConsentUpdated', { detail: existing }));
+        } else {
+            showBanner();
+        }
+
+        window.PhynexConsent = {
+            get: getConsent,
+            openPreferences: openModal
+        };
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();

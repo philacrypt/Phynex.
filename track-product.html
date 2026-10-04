@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track My Product — PHYNEX</title>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f6f8;
+            color: #172033;
+            line-height: 1.6;
+        }
+
+        .top {
+            background: #071a49;
+            color: #fff;
+            padding: 16px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top a { color: #fff; text-decoration: none; font-size: 14px; }
+        .top a:hover { text-decoration: underline; }
+
+        .wrap {
+            width: 90%;
+            max-width: 520px;
+            margin: 50px auto 70px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e1e4e8;
+            border-radius: 12px;
+            padding: 32px 30px;
+        }
+
+        .card h1 { font-size: 24px; margin-bottom: 6px; }
+
+        .card p.sub {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        input#trackingCode {
+            flex: 1;
+            padding: 12px 13px;
+            border: 1px solid #d9dde5;
+            border-radius: 5px;
+            font-size: 18px;
+            letter-spacing: 4px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        input#trackingCode:focus {
+            outline: none;
+            border-color: #0875e1;
+        }
+
+        button.submit {
+            padding: 12px 22px;
+            background: #0875e1;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        button.submit:hover { background: #075fc0; }
+        button.submit:disabled { opacity: .6; cursor: default; }
+
+        .msg {
+            margin-top: 16px;
+            padding: 10px 12px;
+            border-radius: 5px;
+            font-size: 13px;
+            display: none;
+        }
+
+        .msg.error { display: block; background: #fdeaea; color: #b42318; }
+
+        .result {
+            margin-top: 24px;
+            border-top: 1px solid #eee;
+            padding-top: 22px;
+            display: none;
+        }
+
+        .result.show { display: block; }
+
+        .result-top {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .result-top img {
+            width: 78px;
+            height: 78px;
+            object-fit: contain;
+            background: #f5f6f8;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .result-top h2 {
+            font-size: 17px;
+            margin-bottom: 4px;
+        }
+
+        .result-top p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .status-pill {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
+
+        .status-pending { background: #fff4e0; color: #a15c00; }
+        .status-approved { background: #e8f6ec; color: #0f7a3d; }
+        .status-rejected { background: #fdeaea; color: #b42318; }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f2f5;
+            font-size: 13px;
+        }
+
+        .detail-row:last-child { border-bottom: none; }
+        .detail-row span:first-child { color: #687083; }
+        .detail-row span:last-child { font-weight: 700; text-align: right; }
+
+        .rejection-note {
+            margin-top: 16px;
+            background: #fdeaea;
+            color: #b42318;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 480px) {
+            .search-row { flex-direction: column; }
+            button.submit { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top">
+        <strong>PHYNEX</strong>
+        <a href="index.html">← Back to Store</a>
+    </header>
+
+    <main class="wrap">
+        <div class="card">
+            <h1>Track My Product</h1>
+            <p class="sub">Enter the tracking number you received when the product was submitted to see whether it is live.</p>
+
+            <form id="trackForm">
+                <label for="trackingCode">Tracking number</label>
+                <div class="search-row">
+                    <input
+                        type="text"
+                        id="trackingCode"
+                        inputmode="text" autocapitalize="characters"
+                        pattern="[A-Za-z0-9]{4,16}"
+                        maxlength="16"
+                        placeholder="e.g. K7M2QX9P"
+                        autocomplete="off"
+                        required
+                    >
+                    <button type="submit" class="submit" id="trackBtn">Track</button>
+                </div>
+
+                <div id="formMsg" class="msg"></div>
+            </form>
+
+            <div id="result" class="result">
+                <div class="result-top">
+                    <img id="resultImage" src="" alt="">
+                    <div>
+                        <h2 id="resultName"></h2>
+                        <p id="resultSeller"></p>
+                    </div>
+                </div>
+
+                <span id="resultStatus" class="status-pill"></span>
+
+                <div style="margin-top:14px">
+                    <div class="detail-row"><span>Category</span><span id="resultCategory"></span></div>
+                    <div class="detail-row"><span>Price</span><span id="resultPrice"></span></div>
+                    <div class="detail-row"><span>Tracking number</span><span id="resultCode"></span></div>
+                </div>
+
+                <div id="rejectionNote" class="rejection-note" style="display:none"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function money(value) {
+            return 'KSh ' + Number(value || 0).toLocaleString('en-KE');
+        }
+
+        function statusLabel(status) {
+            if (status === 'approved') return 'Approved — live on the store';
+            if (status === 'rejected') return 'Rejected';
+            return 'Pending review';
+        }
+
+        var form = document.getElementById('trackForm');
+        var input = document.getElementById('trackingCode');
+        var msg = document.getElementById('formMsg');
+        var btn = document.getElementById('trackBtn');
+        var result = document.getElementById('result');
+
+        // Allow letters and digits only, and auto-track if a code is present in the URL
+        // (e.g. a link like track-product.html?code=1234).
+        input.addEventListener('input', function () {
+            input.value = input.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, 16);
+        });
+
+        var params = new URLSearchParams(window.location.search);
+        var prefillCode = (params.get('code') || '').trim();
+
+        if (/^[A-Za-z0-9]{4,16}$/.test(prefillCode)) {
+            input.value = prefillCode;
+        }
+
+        async function trackProduct(code) {
+
+            msg.className = 'msg';
+            msg.textContent = '';
+            result.classList.remove('show');
+            btn.disabled = true;
+            btn.textContent = 'Searching...';
+
+            try {
+                var response = await fetch('/api/track/' + encodeURIComponent(code));
+                var data = await response.json();
+
+                if (!response.ok) {
+                    msg.className = 'msg error';
+                    msg.textContent = data.message || 'Could not find that tracking number.';
+                    return;
+                }
+
+                var product = data.product;
+
+                document.getElementById('resultImage').src = product.image || '';
+                document.getElementById('resultImage').alt = product.name || '';
+                document.getElementById('resultName').textContent = product.name || 'Product';
+                document.getElementById('resultSeller').textContent =
+                    product.sellerName ? ('Sold by ' + product.sellerName) : '';
+                document.getElementById('resultCategory').textContent = product.category || '—';
+                document.getElementById('resultPrice').textContent = money(product.price);
+                document.getElementById('resultCode').textContent = product.trackingCode || code;
+
+                var statusEl = document.getElementById('resultStatus');
+                statusEl.textContent = statusLabel(product.status);
+                statusEl.className = 'status-pill status-' + (product.status || 'pending');
+
+                var rejectionNote = document.getElementById('rejectionNote');
+
+                if (product.status === 'rejected' && product.rejectionReason) {
+                    rejectionNote.style.display = 'block';
+                    rejectionNote.textContent = 'Reason: ' + product.rejectionReason;
+                } else {
+                    rejectionNote.style.display = 'none';
+                }
+
+                result.classList.add('show');
+
+            } catch (error) {
+                msg.className = 'msg error';
+                msg.textContent = 'Network error. Please try again.';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Track';
+            }
+        }
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            var code = input.value.trim();
+
+            if (!/^[A-Za-z0-9]{4,16}$/.test(code)) {
+                msg.className = 'msg error';
+                msg.textContent = 'Enter a valid tracking number.';
+                return;
+            }
+
+            trackProduct(code);
+        });
+
+        if (/^[A-Za-z0-9]{4,16}$/.test(prefillCode)) {
+            trackProduct(prefillCode);
+        }
+    </script>
+
+</body>
+</html>

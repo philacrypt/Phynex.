@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Login — PHYNEX</title>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f6f8;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        .header {
+            height: 64px;
+            background: #073bce;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            color: white;
+        }
+
+        .logo { font-size: 25px; font-weight: 800; }
+
+        .back-home {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-home:hover { text-decoration: underline; }
+
+        .wrap {
+            width: 90%;
+            max-width: 420px;
+            margin: 60px auto 80px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e2e4e8;
+            padding: 32px 30px;
+        }
+
+        .card h1 { font-size: 24px; margin-bottom: 6px; }
+
+        .card p.sub {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            margin-top: 16px;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px 13px;
+            border: 1px solid #d9dde5;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        input:focus { outline: none; border-color: #073bce; }
+
+        button.submit {
+            width: 100%;
+            margin-top: 24px;
+            padding: 13px;
+            background: #073bce;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button.submit:hover { background: #052fa5; }
+        button.submit:disabled { opacity: .6; cursor: default; }
+
+        .switch {
+            margin-top: 18px;
+            font-size: 13px;
+            text-align: center;
+            color: #555;
+        }
+
+        .switch a { color: #073bce; font-weight: 700; }
+
+        .msg {
+            margin-top: 16px;
+            padding: 10px 12px;
+            border-radius: 5px;
+            font-size: 13px;
+            display: none;
+        }
+
+        .msg.error { display: block; background: #fdeaea; color: #b42318; }
+        .msg.success { display: block; background: #e8f6ec; color: #0f7a3d; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">PHYNEX</div>
+        <a href="index.html" class="back-home">← Back to Store</a>
+    </header>
+
+    <main class="wrap">
+        <div class="card">
+            <h1>Seller Login</h1>
+            <p class="sub">Log in to manage your PHYNEX product listings.</p>
+
+            <form id="loginForm">
+
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
+
+                <p style="margin-top:8px;text-align:right;font-size:12px"><a href="customer-forgot-password.html?type=seller" style="color:#073bce;font-weight:700">Forgot password?</a></p>
+
+                <div id="formMsg" class="msg"></div>
+
+                <button type="submit" class="submit" id="submitBtn">Log In</button>
+            </form>
+
+            <p class="switch">New to selling on PHYNEX? <a href="seller-register.html">Create an account</a></p>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            var msg = document.getElementById('formMsg');
+            var btn = document.getElementById('submitBtn');
+
+            msg.className = 'msg';
+            msg.textContent = '';
+            btn.disabled = true;
+            btn.textContent = 'Logging in...';
+
+            try {
+                var response = await fetch('/api/sellers/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: document.getElementById('email').value.trim(),
+                        password: document.getElementById('password').value
+                    })
+                });
+
+                var data = await response.json();
+
+                if (!response.ok) {
+                    msg.className = 'msg error';
+                    msg.textContent = data.message || 'Could not log you in.';
+                    btn.disabled = false;
+                    btn.textContent = 'Log In';
+                    return;
+                }
+
+                localStorage.setItem('phynexSellerToken', data.token);
+                localStorage.setItem('phynexSellerName', data.seller.businessName);
+
+                window.location.href = 'seller-dashboard.html';
+
+            } catch (error) {
+                msg.className = 'msg error';
+                msg.textContent = 'Network error. Please try again.';
+                btn.disabled = false;
+                btn.textContent = 'Log In';
+            }
+        });
+    </script>
+
+</body>
+</html>

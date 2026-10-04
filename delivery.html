@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delivery Information | PHYNEX</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --brand: #0b3fae;
+        --brand-dark: #082a7a;
+        --brand-light: #4f7fe8;
+        --accent: #e2971f;
+        --ink: #131a2c;
+        --ink-soft: #5b6478;
+        --line: #e3e6ee;
+        --paper: #f5f6fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', Arial, sans-serif; background: var(--paper); color: var(--ink); line-height: 1.6; }
+    h1, h2, h3 { font-family: 'Space Grotesk', 'Inter', sans-serif; }
+    a { color: inherit; }
+
+    .header { height: 66px; background: var(--brand); display: flex; align-items: center; justify-content: space-between; padding: 0 7%; color: #fff; }
+    .logo { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+    .back-home { color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; opacity: 0.92; }
+    .back-home:hover { opacity: 1; text-decoration: underline; }
+
+    .container { width: 88%; max-width: 1080px; margin: 40px auto 70px; }
+
+    .page-title { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); color: #fff; border-radius: 14px; padding: 38px 40px; margin-bottom: 22px; }
+    .page-title h1 { font-size: clamp(1.7rem, 3.4vw, 2.2rem); margin-bottom: 8px; }
+    .page-title p { color: #cfdaf7; font-size: 15px; max-width: 640px; }
+
+    .content { display: grid; gap: 18px; }
+    .section { background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--brand); border-radius: 10px; padding: 28px 32px; }
+    .section h2 { font-size: 19px; margin-bottom: 14px; color: var(--brand-dark); }
+    .section p { font-size: 14.5px; color: var(--ink-soft); margin-bottom: 12px; max-width: 780px; }
+    .section ul { padding-left: 20px; color: var(--ink-soft); font-size: 14.5px; }
+    .section li { margin-bottom: 9px; }
+
+    .delivery-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
+    .delivery-table th { background: #eef1f8; text-align: left; padding: 13px 14px; border: 1px solid var(--line); font-weight: 700; color: var(--brand-dark); }
+    .delivery-table td { padding: 13px 14px; border: 1px solid var(--line); color: var(--ink-soft); }
+
+    .notice { margin-top: 18px; padding: 14px 18px; background: #eef3ff; border-left: 4px solid var(--accent); border-radius: 6px; font-size: 14px; color: #33405c; }
+
+    .track-box { margin-top: 15px; display: flex; gap: 10px; max-width: 600px; }
+    .track-box input { flex: 1; height: 46px; border: 1px solid #ccd2e0; border-radius: 6px; padding: 0 14px; font-size: 14px; outline: none; font-family: inherit; }
+    .track-box input:focus { border-color: var(--brand); }
+    .track-box button { border: none; background: var(--brand); color: #fff; padding: 0 24px; border-radius: 6px; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .track-box button:hover { background: var(--brand-dark); }
+    .track-box button:disabled { opacity: .65; cursor: wait; }
+    .track-message { margin-top: 12px; font-size: 14px; }
+    .track-message.error { color: #b3261e; }
+    .track-result { display: none; margin-top: 20px; border-top: 1px solid var(--line); padding-top: 20px; }
+    .track-result.show { display: block; }
+    .track-result h3 { font-size: 17px; margin-bottom: 4px; }
+    .track-meta { color: var(--ink-soft); font-size: 13px; }
+    .track-total { font-weight: 700; margin-top: 10px; }
+    .order-steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin: 22px 0; }
+    .order-step { border-top: 3px solid var(--line); padding-top: 8px; color: var(--ink-soft); font-size: 12px; }
+    .order-step.complete { border-color: #16865a; color: var(--ink); font-weight: 700; }
+    .order-step.current { border-color: var(--accent); }
+    .order-cancelled { padding: 12px 14px; border-left: 4px solid #b3261e; background: #fff0ef; color: #8d1d16; }
+    .tracked-items { display: grid; gap: 10px; margin-top: 18px; }
+    .tracked-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+    .tracked-item img { width: 56px; height: 56px; object-fit: contain; background: #fff; border: 1px solid var(--line); border-radius: 5px; }
+    .tracked-item-name { flex: 1; font-weight: 600; font-size: 14px; }
+    .tracked-item-quantity { color: var(--ink-soft); font-size: 13px; }
+
+    .help-link { display: inline-block; margin-top: 6px; color: var(--brand); font-weight: 700; text-decoration: none; }
+    .help-link:hover { text-decoration: underline; }
+
+    footer { background: #0a1330; color: #aab2c5; text-align: center; padding: 26px 15px; font-size: 13px; margin-top: 10px; }
+    footer a { color: #fff; text-decoration: none; font-weight: 600; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 650px) {
+        .header { padding: 0 5%; height: 58px; }
+        .logo { font-size: 21px; }
+        .container { width: 92%; margin-top: 26px; }
+        .page-title { padding: 26px 24px; }
+        .section { padding: 22px; }
+        .delivery-table { font-size: 13px; }
+        .delivery-table th, .delivery-table td { padding: 10px; }
+        .track-box { flex-direction: column; }
+        .track-box input, .track-box button { width: 100%; height: 46px; }
+    }
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="logo">PHYNEX</div>
+    <a href="index.html" class="back-home">← Back to Store</a>
+</header>
+
+<main class="container">
+
+    <div class="page-title">
+        <h1>Delivery Information</h1>
+        <p>Everything you need to know about delivery options, delivery times, locations and what to expect after placing your order.</p>
+    </div>
+
+    <div class="content">
+
+        <section class="section">
+            <h2>Delivery options</h2>
+            <p>PHYNEX works with delivery partners to get your order safely to the address provided during checkout.</p>
+
+            <table class="delivery-table">
+                <tr>
+                    <th>Delivery option</th>
+                    <th>Estimated time</th>
+                    <th>Availability</th>
+                </tr>
+                <tr>
+                    <td>Standard Delivery</td>
+                    <td>Depending on your location</td>
+                    <td>Selected locations</td>
+                </tr>
+                <tr>
+                    <td>Express Delivery</td>
+                    <td>Depending on your location</td>
+                    <td>Where available</td>
+                </tr>
+            </table>
+
+            <div class="notice">
+                Delivery times may vary depending on your location, product availability, weekends, public holidays and other circumstances affecting delivery.
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>How delivery works</h2>
+            <p>After you place an order, the seller prepares your item for dispatch. Once the package is handed to the delivery partner, it is transported to the delivery address you provided.</p>
+            <ul>
+                <li>Place your order through PHYNEX.</li>
+                <li>Your order is confirmed and prepared.</li>
+                <li>The package is handed to a delivery partner.</li>
+                <li>The package is delivered to your selected address.</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Where we deliver</h2>
+            <p>Delivery availability depends on the product and the location entered during checkout.</p>
+            <p>Before completing your order, check that your delivery address and contact information are correct.</p>
+        </section>
+
+        <section class="section" id="tracking">
+            <h2>Track your order</h2>
+            <p>Enter the order number and email address used at checkout to see the latest order and payment status.</p>
+
+            <form id="orderTrackingForm">
+                <label for="orderNumber">Order number</label>
+                <div class="track-box">
+                    <input type="text" id="orderNumber" placeholder="PHX-XXXXXXXX" maxlength="12" autocomplete="off" required>
+                </div>
+                <label for="orderEmail" style="margin-top:14px">Checkout email</label>
+                <div class="track-box">
+                    <input type="email" id="orderEmail" placeholder="Email used at checkout" autocomplete="email" required>
+                    <button type="submit" id="trackOrderButton">Track Order</button>
+                </div>
+            </form>
+
+            <p id="trackingMessage" class="track-message" role="status" aria-live="polite"></p>
+            <div id="trackingResult" class="track-result" aria-live="polite">
+                <h3 id="trackedOrderTitle"></h3>
+                <p id="trackedOrderMeta" class="track-meta"></p>
+                <p id="trackedOrderTotal" class="track-total"></p>
+                <div id="trackedOrderProgress" class="order-steps"></div>
+                <div id="trackedOrderItems" class="tracked-items"></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Important delivery information</h2>
+            <ul>
+                <li>Make sure your delivery address is complete and accurate.</li>
+                <li>Keep your phone number available in case the delivery partner needs to contact you.</li>
+                <li>Delivery times are estimates and may change because of circumstances outside PHYNEX's control.</li>
+                <li>Some products may have different delivery options depending on the seller and location.</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Need help with a delivery?</h2>
+            <p>If your order has been delayed or you need assistance with delivery, please contact PHYNEX support.</p>
+            <a href="contact.html" class="help-link">Contact PHYNEX Support →</a>
+        </section>
+
+    </div>
+</main>
+
+<footer>
+    © 2026 PHYNEX. All rights reserved. &nbsp;|&nbsp;
+    <a href="index.html">Back to PHYNEX</a>
+</footer>
+
+<script>
+    const orderTrackingForm = document.getElementById("orderTrackingForm");
+    const orderNumberInput = document.getElementById("orderNumber");
+    const trackingMessage = document.getElementById("trackingMessage");
+    const trackingResult = document.getElementById("trackingResult");
+    const trackOrderButton = document.getElementById("trackOrderButton");
+    const orderSteps = ["pending", "paid", "processing", "shipped", "delivered"];
+    const orderStepLabels = ["Order received", "Payment confirmed", "Preparing", "Shipped", "Delivered"];
+
+    orderNumberInput.addEventListener("input", function () {
+        orderNumberInput.value = orderNumberInput.value.toUpperCase().replace(/[^A-Z0-9-]/g, "").slice(0, 12);
+    });
+
+    function renderOrderSteps(status) {
+        const progress = document.getElementById("trackedOrderProgress");
+        progress.replaceChildren();
+
+        if (status === "cancelled") {
+            const cancelled = document.createElement("p");
+            cancelled.className = "order-cancelled";
+            cancelled.textContent = "This order was cancelled. Contact PHYNEX support if you need help.";
+            progress.appendChild(cancelled);
+            return;
+        }
+
+        const currentIndex = Math.max(0, orderSteps.indexOf(status));
+        orderStepLabels.forEach(function (label, index) {
+            const step = document.createElement("div");
+            step.className = "order-step";
+            if (index < currentIndex) step.classList.add("complete");
+            if (index === currentIndex) step.classList.add("complete", "current");
+            step.textContent = label;
+            progress.appendChild(step);
+        });
+    }
+
+    function renderTrackedItems(items) {
+        const container = document.getElementById("trackedOrderItems");
+        container.replaceChildren();
+        items.forEach(function (item) {
+            const row = document.createElement("div");
+            row.className = "tracked-item";
+            if (item.image) {
+                const image = document.createElement("img");
+                image.src = item.image;
+                image.alt = item.name || "Ordered product";
+                image.onerror = function () { image.hidden = true; };
+                row.appendChild(image);
+            }
+            const name = document.createElement("span");
+            name.className = "tracked-item-name";
+            name.textContent = item.name || "Product";
+            const quantity = document.createElement("span");
+            quantity.className = "tracked-item-quantity";
+            quantity.textContent = "Qty " + Number(item.quantity || 1);
+            row.append(name, quantity);
+            container.appendChild(row);
+        });
+    }
+
+    orderTrackingForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        trackingMessage.className = "track-message";
+        trackingMessage.textContent = "";
+        trackingResult.classList.remove("show");
+        trackOrderButton.disabled = true;
+        trackOrderButton.textContent = "Checking...";
+
+        try {
+            const response = await fetch("/api/orders/track", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    orderNumber: orderNumberInput.value.trim(),
+                    email: document.getElementById("orderEmail").value.trim()
+                })
+            });
+            const data = await response.json();
+
+            if (!response.ok) {
+                trackingMessage.className = "track-message error";
+                trackingMessage.textContent = data.message || "Could not find that order.";
+                return;
+            }
+
+            const order = data.order;
+            const statusLabel = order.status.charAt(0).toUpperCase() + order.status.slice(1);
+            document.getElementById("trackedOrderTitle").textContent = "Order " + order.orderNumber + " · " + statusLabel;
+            document.getElementById("trackedOrderMeta").textContent = "Payment: " + order.paymentStatus + " · Placed " + new Date(order.createdAt).toLocaleString();
+            document.getElementById("trackedOrderTotal").textContent = "Total: KSh " + Number(order.total || 0).toLocaleString("en-KE");
+            renderOrderSteps(order.status);
+            renderTrackedItems(order.items || []);
+            trackingResult.classList.add("show");
+        } catch (error) {
+            trackingMessage.className = "track-message error";
+            trackingMessage.textContent = "Could not reach PHYNEX right now. Please try again.";
+        } finally {
+            trackOrderButton.disabled = false;
+            trackOrderButton.textContent = "Track Order";
+        }
+    });
+
+    const trackingParams = new URLSearchParams(window.location.search);
+    const prefilledOrder = (trackingParams.get("order") || "").toUpperCase();
+    const prefilledEmail = trackingParams.get("email") || "";
+    if (/^PHX-[A-F0-9]{8}$/.test(prefilledOrder) && prefilledEmail) {
+        orderNumberInput.value = prefilledOrder;
+        document.getElementById("orderEmail").value = prefilledEmail;
+        orderTrackingForm.requestSubmit();
+    }
+</script>
+
+</body>
+</html>

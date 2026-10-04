@@ -1,0 +1,32 @@
+MPESA_ENV=sandbox
+MPESA_CONSUMER_KEY=
+MPESA_CONSUMER_SECRET=
+MPESA_PASSKEY=
+MPESA_SHORTCODE=
+MPESA_CALLBACK_URL=https://your-public-https-domain.example/api/mpesa/callback
+# Long random URL-safe string (letters/digits only). The server appends it to the callback URL it gives Safaricom and rejects callbacks without it.
+MPESA_CALLBACK_SECRET=
+PORT=3000
+APP_URL=https://localhost:3000
+ADMIN_PASSWORD=replace-with-a-strong-admin-password
+SESSION_SECRET=replace-with-a-long-random-secret
+
+# Used to send password-reset emails (and the contact form). A Gmail
+# account with an "app password" works well here.
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+# Use PHYNEX's Gmail account. Create an app password in Google Account security.
+EMAIL_USER=phynex70@gmail.com
+EMAIL_PASSWORD=
+EMAIL_FROM=PHYNEX <phynex70@gmail.com>
+
+# "Sign in with Google" for customers. Create an OAuth Client ID
+# (type: Web application) at https://console.cloud.google.com/apis/credentials
+# and add this site's URL under "Authorized JavaScript origins".
+# Only the Client ID is needed — never put the Client Secret here,
+# it's not used by this sign-in method.
+GOOGLE_CLIENT_ID=
+
+
+# IMPORTANT on Render: mount a Persistent Disk at /data and set this to /data.
+PHYNEX_DATA_DIR=/data

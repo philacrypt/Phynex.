@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sell on PHYNEX</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f6f8;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        .header {
+            height: 64px;
+            background: #073bce;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            color: white;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .back-home {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-home:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 86%;
+            max-width: 1100px;
+            margin: 35px auto 60px;
+        }
+
+        .page-title {
+            background: white;
+            border: 1px solid #e2e4e8;
+            padding: 32px 35px;
+            margin-bottom: 20px;
+        }
+
+        .page-title h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #666;
+            font-size: 15px;
+            max-width: 750px;
+        }
+
+        .content {
+            background: white;
+            border: 1px solid #e2e4e8;
+        }
+
+        .section {
+            padding: 30px 35px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section h2 {
+            font-size: 20px;
+            margin-bottom: 14px;
+        }
+
+        .section h3 {
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .section p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 13px;
+            max-width: 850px;
+        }
+
+        .section ul {
+            padding-left: 20px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .section li {
+            margin-bottom: 9px;
+        }
+
+        /* SELLING STEPS */
+
+        .steps {
+            margin-top: 18px;
+        }
+
+        .step {
+            display: flex;
+            gap: 18px;
+            padding: 18px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .step:last-child {
+            border-bottom: none;
+        }
+
+        .number {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            background: #073bce;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .step p {
+            margin: 0;
+        }
+
+        /* BUTTON */
+
+        .seller-button {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 12px 22px;
+            background: #073bce;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 3px;
+        }
+
+        .seller-button:hover {
+            background: #052fa5;
+        }
+
+        .seller-button.secondary {
+            background: white;
+            color: #073bce;
+            border: 1px solid #073bce;
+            margin-left: 10px;
+        }
+
+        .seller-button.secondary:hover {
+            background: #f0f4ff;
+        }
+
+        .notice {
+            background: #f7f9ff;
+            border-left: 4px solid #073bce;
+            padding: 15px 18px;
+            margin-top: 16px;
+            font-size: 14px;
+            color: #444;
+        }
+
+        footer {
+            background: #062b75;
+            color: white;
+            text-align: center;
+            padding: 22px 15px;
+            font-size: 13px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        @media (max-width: 700px) {
+
+            .header {
+                height: 58px;
+                padding: 0 5%;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .back-home {
+                font-size: 13px;
+            }
+
+            .container {
+                width: 94%;
+                margin-top: 20px;
+            }
+
+            .page-title {
+                padding: 23px;
+            }
+
+            .page-title h1 {
+                font-size: 25px;
+            }
+
+            .section {
+                padding: 23px;
+            }
+
+            .step {
+                gap: 12px;
+            }
+
+            .seller-button.secondary {
+                margin-left: 0;
+                margin-top: 10px;
+                display: block;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <div class="logo">
+            PHYNEX
+        </div>
+
+        <a href="index.html" class="back-home">
+            ← Back to Store
+        </a>
+
+    </header>
+
+
+    <!-- MAIN -->
+    <main class="container">
+
+        <div class="page-title">
+
+            <h1>Sell on PHYNEX</h1>
+
+            <p>
+                Bring your products to more customers by selling through
+                the PHYNEX marketplace.
+            </p>
+
+        </div>
+
+
+        <div class="content">
+
+            <!-- INTRODUCTION -->
+            <section class="section">
+
+                <h2>Grow your business with PHYNEX</h2>
+
+                <p>
+                    PHYNEX provides a marketplace where sellers can list
+                    products and reach customers looking for technology,
+                    electronics and other products.
+                </p>
+
+                <p>
+                    Whether you are an established business or an
+                    independent seller, our goal is to make selling online
+                    straightforward.
+                </p>
+
+                <a href="seller-register.html" class="seller-button">
+                    Become a Seller
+                </a>
+                <a href="seller-login.html" class="seller-button secondary">
+                    Already selling? Log in
+                </a>
+
+            </section>
+
+
+            <!-- HOW IT WORKS -->
+            <section class="section">
+
+                <h2>How selling works</h2>
+
+                <div class="steps">
+
+                    <div class="step">
+
+                        <div class="number">1</div>
+
+                        <div>
+                            <h3>Create your seller account</h3>
+
+                            <p>
+                                Sign up instantly with your business and
+                                contact information — no waiting for approval
+                                to get started.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="number">2</div>
+
+                        <div>
+                            <h3>Submit your products</h3>
+
+                            <p>
+                                Add product names, descriptions, prices,
+                                photographs and other relevant information
+                                from your seller dashboard.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="number">3</div>
+
+                        <div>
+                            <h3>PHYNEX reviews each listing</h3>
+
+                            <p>
+                                Every submitted product is checked by the
+                                PHYNEX team before it goes live on the store.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="number">4</div>
+
+                        <div>
+                            <h3>Receive orders and dispatch</h3>
+
+                            <p>
+                                Once approved, customers can discover your
+                                products, place orders, and you fulfil them
+                                following the applicable delivery process.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SELLER REQUIREMENTS -->
+            <section class="section">
+
+                <h2>What you need to sell</h2>
+
+                <p>
+                    Sellers may need to provide information required to
+                    verify their account and products.
+                </p>
+
+                <ul>
+
+                    <li>Accurate seller and contact information.</li>
+
+                    <li>Clear product descriptions and photographs.</li>
+
+                    <li>Accurate product prices and availability.</li>
+
+                    <li>Reliable order fulfilment.</li>
+
+                    <li>Compliance with PHYNEX marketplace requirements.</li>
+
+                </ul>
+
+            </section>
+
+
+            <!-- SELLER RESPONSIBILITIES -->
+            <section class="section">
+
+                <h2>Seller responsibilities</h2>
+
+                <p>
+                    Sellers are responsible for ensuring that the products
+                    they list are accurately described and available for
+                    sale.
+                </p>
+
+                <p>
+                    Sellers must also fulfil orders and follow the applicable
+                    PHYNEX policies relating to products, delivery, returns
+                    and customer service.
+                </p>
+
+                <div class="notice">
+                    Seller requirements, fees and marketplace terms may
+                    change as the PHYNEX marketplace develops.
+                </div>
+
+            </section>
+
+
+            <!-- SUPPORT -->
+            <section class="section">
+
+                <h2>Ready to start selling?</h2>
+
+                <p>
+                    Create your seller account now, or contact the PHYNEX
+                    team if you have questions before you begin.
+                </p>
+
+                <a href="seller-register.html" class="seller-button">
+                    Become a Seller
+                </a>
+                <a href="contact.html" class="seller-button secondary">
+                    Contact PHYNEX
+                </a>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        © 2026 PHYNEX. All rights reserved.
+        &nbsp; | &nbsp;
+
+        <a href="index.html">
+            Back to PHYNEX
+        </a>
+
+    </footer>
+
+</body>
+</html>

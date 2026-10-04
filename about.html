@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About PHYNEX</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --brand: #0b3fae;
+            --brand-dark: #082a7a;
+            --brand-light: #4f7fe8;
+            --accent: #e2971f;
+            --ink: #16181d;
+            --muted: #5b6270;
+            --line: #e5e7ec;
+            --bg: #f4f5f8;
+        }
+
+        body {
+            font-family: 'Manrope', Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* HEADER */
+        .header {
+            height: 68px;
+            background: var(--brand);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+        .logo img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+
+        .back-home {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.92;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: opacity 0.15s ease;
+        }
+
+        .back-home:hover {
+            opacity: 1;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+            color: white;
+            padding: 64px 7% 76px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.3fr 0.7fr;
+            gap: 40px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-art {
+            justify-self: end;
+        }
+
+        .hero-art svg {
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -120px;
+            right: -100px;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+        }
+
+        .eyebrow {
+            font-size: 13px;
+            font-weight: 700;
+            color: #c6d4ff;
+            margin-bottom: 14px;
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            max-width: 16ch;
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: #dbe3fb;
+            max-width: 640px;
+        }
+
+        /* MAIN */
+        .container {
+            width: 88%;
+            max-width: 1100px;
+            margin: -40px auto 70px;
+            position: relative;
+        }
+
+        .content {
+            background: white;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px -20px rgba(11, 63, 174, 0.2);
+        }
+
+        .section {
+            padding: 44px 48px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 21px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .section p {
+            color: var(--muted);
+            font-size: 15px;
+            margin-bottom: 13px;
+            max-width: 780px;
+        }
+
+        .section p:last-of-type {
+            margin-bottom: 0;
+        }
+
+        /* VALUES */
+        .values {
+            margin-top: 22px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .value {
+            padding: 24px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: #fafbfc;
+        }
+
+        .value-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: #eaf0ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+        }
+
+        .value-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: var(--brand);
+        }
+
+        .value h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--brand);
+        }
+
+        .value p {
+            font-size: 13.5px;
+            margin: 0;
+        }
+
+        /* LINKS */
+        .page-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 6px;
+            color: var(--brand);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14.5px;
+            transition: gap 0.15s ease;
+        }
+
+        .page-link:hover {
+            gap: 10px;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            border-radius: 10px;
+            background: #eaf0ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--brand);
+        }
+
+        .section-head h2 {
+            margin-bottom: 0;
+        }
+
+        /* STATS STRIP */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 22px;
+        }
+
+        .stat {
+            border-left: 3px solid var(--accent);
+            padding-left: 16px;
+        }
+
+        .stat .num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--brand-dark);
+        }
+
+        .stat .label {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #0a1330;
+            color: #aab2c5;
+            text-align: center;
+            padding: 26px 15px;
+            font-size: 13px;
+        }
+
+        .footer-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: white;
+            font-weight: 800;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .footer-logo img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* MOBILE */
+        @media (max-width: 700px) {
+            .header {
+                height: 60px;
+                padding: 0 5%;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .back-home span.label {
+                display: none;
+            }
+
+            .hero {
+                padding: 44px 6% 60px;
+            }
+
+            .hero-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-art {
+                display: none;
+            }
+
+            .section-head {
+                gap: 10px;
+            }
+
+            .section-icon {
+                width: 34px;
+                height: 34px;
+                min-width: 34px;
+            }
+
+            .section-icon svg {
+                width: 17px;
+                height: 17px;
+            }
+
+            .container {
+                width: 92%;
+                margin-top: -30px;
+            }
+
+            .content {
+                border-radius: 10px;
+            }
+
+            .section {
+                padding: 28px 24px;
+            }
+
+            .values, .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .back-home, .page-link {
+                transition: none;
+            }
+        }
+
+        a:focus-visible {
+            outline: 2px solid white;
+            outline-offset: 3px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <img src="images/pic 30.jpeg" alt="PHYNEX logo">
+            PHYNEX
+        </div>
+        <a href="index.html" class="back-home">
+            ← <span class="label">Back to Store</span>
+        </a>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div>
+                <div class="eyebrow">About Us</div>
+                <h1>Making online shopping simple, honest, and fast.</h1>
+                <p>
+                    PHYNEX is an online marketplace focused on making it
+                    easier for customers to discover and purchase
+                    technology and everyday products.
+                </p>
+            </div>
+            <div class="hero-art">
+                <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="110" cy="110" r="98" fill="white" fill-opacity="0.06"/>
+                    <rect x="52" y="78" width="116" height="92" rx="10" fill="white" fill-opacity="0.14"/>
+                    <path d="M78 78V60C78 42 92 28 110 28C128 28 142 42 142 60V78" stroke="white" stroke-opacity="0.55" stroke-width="7" stroke-linecap="round"/>
+                    <circle cx="88" cy="112" r="7" fill="#c6d4ff"/>
+                    <circle cx="132" cy="112" r="7" fill="#c6d4ff"/>
+                    <rect x="70" y="140" width="80" height="8" rx="4" fill="white" fill-opacity="0.35"/>
+                    <rect x="70" y="156" width="52" height="8" rx="4" fill="white" fill-opacity="0.25"/>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN -->
+    <main class="container">
+        <div class="content">
+
+            <!-- WHO WE ARE -->
+            <section class="section">
+                <h2>Who we are</h2>
+                <p>
+                    PHYNEX is built around a simple idea: online shopping
+                    should be convenient, straightforward and accessible.
+                </p>
+                <p>
+                    Our platform brings products and customers together in
+                    one place, giving shoppers the ability to browse
+                    products, compare options and place orders online.
+                </p>
+
+                <div class="stats">
+                    <div class="stat">
+                        <div class="num">100%</div>
+                        <div class="label">Online, from browsing to checkout</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num">Kenya</div>
+                        <div class="label">Where we currently operate</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num">Mon–Sat</div>
+                        <div class="label">Support hours, 8AM–7PM EAT</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- WHAT WE DO -->
+            <section class="section">
+                <h2>What we do</h2>
+                <p>
+                    PHYNEX provides an online shopping platform where
+                    customers can discover products from participating
+                    sellers.
+                </p>
+                <p>
+                    We aim to provide a clear shopping experience from
+                    product discovery through checkout, delivery and
+                    after-sales support.
+                </p>
+            </section>
+
+            <!-- VALUES -->
+            <section class="section">
+                <h2>What matters to us</h2>
+                <div class="values">
+                    <div class="value">
+                        <div class="value-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 21C12 21 4 15.5 4 9.5C4 6.5 6.2 4.5 9 4.5C10.5 4.5 11.5 5.2 12 6C12.5 5.2 13.5 4.5 15 4.5C17.8 4.5 20 6.5 20 9.5C20 15.5 12 21 12 21Z" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>Customer First</h3>
+                        <p>
+                            We focus on creating a straightforward shopping
+                            experience and making useful information easy
+                            to find.
+                        </p>
+                    </div>
+                    <div class="value">
+                        <div class="value-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 3L19 6V11C19 15.5 16 19.3 12 21C8 19.3 5 15.5 5 11V6L12 3Z" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M9 11.5L11 13.5L15 9.5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>Trust</h3>
+                        <p>
+                            We aim to provide clear product, order and
+                            support information throughout the shopping
+                            journey.
+                        </p>
+                    </div>
+                    <div class="value">
+                        <div class="value-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 2L4 14H11L10 22L20 9H13L13 2Z" stroke-width="1.7" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>Convenience</h3>
+                        <p>
+                            We make it easier for customers to discover
+                            products and manage their purchases online.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SHOP -->
+            <section class="section">
+                <div class="section-head">
+                    <div class="section-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 8H18L17 20H7L6 8Z" stroke-width="1.7" stroke-linejoin="round"/>
+                            <path d="M9 8V6C9 4.3 10.3 3 12 3C13.7 3 15 4.3 15 6V8" stroke-width="1.7" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h2>Shopping with PHYNEX</h2>
+                </div>
+                <p>
+                    Browse our product categories, select the products you
+                    need and add them to your cart. Before completing your
+                    purchase, review your order and delivery details.
+                </p>
+                <a href="index.html" class="page-link">Start Shopping →</a>
+            </section>
+
+            <!-- SELL -->
+            <section class="section">
+                <div class="section-head">
+                    <div class="section-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 9L5 3H19L21 9" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3 9C3 10.7 4.3 12 6 12C7.7 12 9 10.7 9 9C9 10.7 10.3 12 12 12C13.7 12 15 10.7 15 9C15 10.7 16.3 12 18 12C19.7 12 21 10.7 21 9" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5 12V20H19V12" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h2>Interested in selling?</h2>
+                </div>
+                <p>
+                    If you are a business or individual seller interested
+                    in listing products on PHYNEX, visit our seller
+                    information page to learn more.
+                </p>
+                <a href="sell.html" class="page-link">Sell on PHYNEX →</a>
+            </section>
+
+            <!-- SUPPORT -->
+            <section class="section">
+                <div class="section-head">
+                    <div class="section-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 12C4 7.6 7.6 4 12 4C16.4 4 20 7.6 20 12V16" stroke-width="1.7" stroke-linecap="round"/>
+                            <rect x="3" y="13" width="5" height="7" rx="2" stroke-width="1.7"/>
+                            <rect x="16" y="13" width="5" height="7" rx="2" stroke-width="1.7"/>
+                            <path d="M20 16V18C20 19.7 18.7 21 17 21H14" stroke-width="1.7" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h2>Need assistance?</h2>
+                </div>
+                <p>
+                    If you have a question about an order, delivery,
+                    returns or another PHYNEX service, our support team can
+                    help.
+                </p>
+                <a href="contact.html" class="page-link">Contact Us →</a>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">
+            <img src="logo.png" alt="PHYNEX logo">
+            PHYNEX
+        </div>
+        <div>
+            © 2026 PHYNEX. All rights reserved.
+            &nbsp; | &nbsp;
+            <a href="index.html">Back to PHYNEX</a>
+        </div>
+    </footer>
+
+</body>
+</html>
