@@ -12,6 +12,8 @@
     const CUSTOMER_TOKEN_KEY = 'phynexCustomerToken';
     let DELIVERY_FEE = 300; // default; replaced by the server's value from /api/config
     let marketplaceProducts = [];
+    let marketplaceProductSignature = '';
+    let storeCategorySignature = '';
 
     fetch('/api/config').then(function (res) { return res.json(); }).then(function (config) {
         var fee = Number(config && config.deliveryFee);
@@ -161,6 +163,11 @@
             if (!response.ok) throw new Error('Could not load categories');
             const data = await response.json();
             const categories = Array.isArray(data.categories) ? data.categories : [];
+            const signature = JSON.stringify(categories.map(function (category) {
+                return [category.id, category.name, category.productCount];
+            }));
+            if (signature === storeCategorySignature) return;
+            storeCategorySignature = signature;
 
             container.innerHTML = categories.map(function (category) {
                 return '<div class="category" data-category="' + escapeHtml(category.name) + '" role="button" tabindex="0">' +
@@ -208,6 +215,11 @@
             if (!response.ok) throw new Error('Could not load marketplace products');
             const data = await response.json();
             const products = Array.isArray(data.products) ? data.products : [];
+            const signature = JSON.stringify(products.map(function (product) {
+                return [product.id, product.name, product.image, product.price, product.oldPrice, product.category, product.subcategory, product.stock, product.availability, product.sponsored];
+            }));
+            if (signature === marketplaceProductSignature) return;
+            marketplaceProductSignature = signature;
             marketplaceProducts = products;
 
             trackMarketActivity(
@@ -1772,7 +1784,17 @@
 
             trackMarketVisit();
 
-        loadMarketplaceProducts();
+            loadStoreCategories();
+            loadMarketplaceProducts();
+
+            function refreshVisibleMarketplace() {
+                if (document.visibilityState !== 'visible') return;
+                loadStoreCategories();
+                loadMarketplaceProducts();
+            }
+
+            window.setInterval(refreshVisibleMarketplace, 30000);
+            document.addEventListener('visibilitychange', refreshVisibleMarketplace);
 
             renderCheckoutPage();
 

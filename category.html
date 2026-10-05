@@ -15,6 +15,7 @@
 (function(){
  const grid=document.getElementById('grid'), title=document.getElementById('title'), count=document.getElementById('count');
  const category=new URLSearchParams(location.search).get('category')||'';
+ let productSignature='';
  function esc(v){const d=document.createElement('div');d.textContent=v||'';return d.innerHTML}
  function money(v){return 'KSh '+Number(v||0).toLocaleString('en-KE')}
  async function load(){
@@ -22,6 +23,9 @@
    const r=await fetch('/api/products',{cache:'no-store'}); if(!r.ok) throw new Error();
    const data=await r.json(); let products=Array.isArray(data.products)?data.products:[];
    if(category){products=products.filter(p=>String(p.category||'').toLowerCase()===category.toLowerCase() || String(p.subcategory||'').toLowerCase()===category.toLowerCase());}
+    const signature=JSON.stringify(products.map(p=>[p.id,p.name,p.image,p.price,p.category,p.subcategory,p.stock,p.availability]));
+    if(signature===productSignature)return;
+    productSignature=signature;
    title.textContent=category||'All Products'; count.textContent=products.length+' product'+(products.length===1?'':'s');
    grid.innerHTML=products.length?products.map(p=>
     '<a class="card" href="index.html?product='+encodeURIComponent(p.id)+'">'+
@@ -31,6 +35,8 @@
   }catch(e){count.textContent='';grid.innerHTML='<div class="empty">Could not load products. Please refresh.</div>';}
  }
  load();
+ window.setInterval(function(){if(document.visibilityState==='visible')load();},30000);
+ document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')load();});
 })();
 </script>
 </body>

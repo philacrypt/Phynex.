@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/package",
   "name": "phynex-store",
   "version": "1.0.0",
   "private": true,
