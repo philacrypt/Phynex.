@@ -402,12 +402,12 @@
            photo. Recommended size ~800x900px (portrait) so the crop
            looks good; filenames below are just placeholders. ---- */
         .showcase {
-            width: 103.0928%;
+            width: 100vw;
             position: relative;
-            left: auto;
-            right: auto;
-            margin-left: -1.5464%;
-            margin-right: -1.5464%;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
             margin-top: 0;
             background: #f0f2f6;
             padding: 28px 4% 34px;
@@ -424,43 +424,22 @@
         .showcase-tile {
             position: relative;
             display: block;
-            aspect-ratio: 1;
-            border-radius: 50%;
-            overflow: visible;
-            background: transparent;
-            box-shadow: none;
-            isolation: isolate;
-        }
-
-        .showcase-tile::before {
-            content: '';
-            position: absolute;
-            z-index: 0;
-            width: 76%;
-            aspect-ratio: 1;
-            left: 12%;
-            top: 5%;
-            border-radius: 50%;
-            background: radial-gradient(circle at 32% 25%, #fff 0, #f6fbff 43%, #cce5fb 100%);
-            box-shadow: inset -12px -16px 25px rgba(7,26,73,.12), 0 18px 30px rgba(7,26,73,.16), 0 0 0 1px rgba(8,117,225,.12);
-            transition: transform .3s ease, box-shadow .3s ease;
+            aspect-ratio: 4 / 5;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #dde1e8;
+            box-shadow: 0 2px 10px rgba(7,26,73,.08);
         }
 
         .showcase-tile img {
             position: absolute;
-            z-index: 1;
-            left: 50%;
-            top: 43%;
-            width: 78%;
-            height: 78%;
-            border-radius: 50%;
-            padding: 10px;
-            background: radial-gradient(circle at 32% 24%, #fff, #eef7ff 78%);
-            box-shadow: 0 20px 28px rgba(7,26,73,.24), inset 0 0 0 1px rgba(255,255,255,.9);
-            object-fit: contain;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             display: block;
-            transform: translate(-50%, -50%);
-            transition: transform .3s ease, box-shadow .3s ease;
+            transition: transform .3s ease;
+            z-index: 1;
         }
 
         .showcase-tile img.broken {
@@ -468,13 +447,7 @@
         }
 
         .showcase-tile:hover img {
-            transform: translate(-50%, -53%) scale(1.06);
-            box-shadow: 0 26px 34px rgba(7,26,73,.3), inset 0 0 0 1px rgba(255,255,255,.9);
-        }
-
-        .showcase-tile:hover::before {
             transform: scale(1.04);
-            box-shadow: inset -12px -16px 25px rgba(7,26,73,.14), 0 22px 36px rgba(7,26,73,.2), 0 0 0 1px rgba(8,117,225,.2);
         }
 
         /* Shows through until a real photo is dropped in at the
@@ -517,24 +490,23 @@
             position: absolute;
             left: 0;
             right: 0;
-            bottom: 2%;
+            bottom: 0;
             z-index: 2;
-            padding: 10px 8px;
-            text-align: center;
-            color: #071a49;
+            padding: 16px;
+            background: linear-gradient(0deg, rgba(7,26,73,.72) 0%, rgba(7,26,73,0) 100%);
         }
 
         .showcase-tile-overlay strong {
             display: block;
-            color: #071a49;
-            font-size: 14px;
+            color: #fff;
+            font-size: 15px;
             font-weight: 700;
         }
 
         .showcase-tile-overlay span {
             display: block;
             margin-top: 2px;
-            color: #0875e1;
+            color: rgba(255,255,255,.85);
             font-size: 12px;
             font-weight: 600;
         }
@@ -557,6 +529,40 @@
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+
+        .category-disclosure > summary {
+            list-style: none;
+            cursor: pointer;
+        }
+
+        .category-disclosure > summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .category-disclosure:not([open]) > :not(summary) {
+            display: none;
+        }
+
+        .category-disclosure .category-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: #0875e1;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .category-disclosure[open] .category-toggle i {
+            transform: rotate(180deg);
+        }
+
+        .category-disclosure .category-toggle i {
+            transition: transform .2s ease;
+        }
+
+        .category-disclosure .categories {
+            margin-bottom: 12px;
         }
 
         .heading-icon {
@@ -2106,18 +2112,13 @@
 </div>
 
 
-<div class="section-heading">
+<details class="category-disclosure">
+    <summary class="section-heading">
+        <h2><span class="heading-icon"><i class="fa-solid fa-grip"></i></span>Shop by Category</h2>
+        <span class="category-toggle">Browse categories <i class="fa-solid fa-chevron-down"></i></span>
+    </summary>
 
-    <h2><span class="heading-icon"><i class="fa-solid fa-grip"></i></span>Shop by Category</h2>
-
-    <a href="categories.html" class="view-all">
-        View All Categories
-    </a>
-
-</div>
-
-
-<div class="categories">
+    <div class="categories">
 
     <div class="category" data-category="Phones & Tablets" style="--accent:#0875e1;">
         <span class="cat-badge"><i class="fa-solid fa-mobile-screen-button"></i></span>
@@ -2162,6 +2163,8 @@
     </div>
 
 </div>
+    <a href="categories.html" class="view-all">View All Categories</a>
+</details>
 
 
 <div class="section-heading" id="productsSection">
